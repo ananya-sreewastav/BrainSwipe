@@ -34,16 +34,7 @@ class _SwipePageState extends State<SwipePage> {
           ),
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(
-            Icons.account_circle,
-            size: 34,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+
       ),
       body: GestureDetector(
         onHorizontalDragEnd: _onHorizontalDrag,

@@ -77,16 +77,7 @@ class _TimetablePageState extends State<TimetablePage> {
           ),
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(
-            Icons.account_circle,
-            size: 34,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context);  // Go back to previous page
-          },
-        ),
+
       ),
       backgroundColor: Colors.white,
       body: Padding(
