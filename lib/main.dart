@@ -6,6 +6,7 @@ import 'user.dart';
 import 'planner.dart';
 import 'swipe_page.dart';
 import 'timetable_page.dart';
+import 'tutor_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,6 +28,9 @@ class MyApp extends StatelessWidget {
         '/user': (context) => UserPage(), // Route for user page
         '/planner': (context) => PlannerPage(), // Route for planner page
         '/swipe': (context) => SwipePage(), // Route for swipe page
+        '/tutor': (context) => TutorPage(), // Route for tutor page
+        '/timetable': (context) => TimetablePage(), // Route for timetable page
+        // Add routes for additional pages as needed
       },
     );
   }

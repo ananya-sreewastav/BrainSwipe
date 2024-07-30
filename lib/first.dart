@@ -1,3 +1,4 @@
+import 'package:brainswipe/tutor_page.dart';
 import 'package:flutter/material.dart';
 import 'user.dart'; // Import your user.dart file
 import 'planner.dart'; // Import your planner.dart file
@@ -222,7 +223,7 @@ class Section4 extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => TimetablePage()),
+                MaterialPageRoute(builder: (context) => TutorPage()),
               );
             },
             child: Text('Click Here'),
