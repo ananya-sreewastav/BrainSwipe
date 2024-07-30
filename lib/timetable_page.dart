@@ -15,6 +15,7 @@ Map<String, List<String>> generateTimetable(List<Subject> subjects) {
     'Thursday': [],
     'Friday': [],
     'Saturday':[],
+    'Sunday':[],
 
    
   };
