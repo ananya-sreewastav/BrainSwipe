@@ -1,16 +1,16 @@
 import 'package:brainswipe/tutor_page.dart';
 import 'package:flutter/material.dart';
-import 'user.dart'; // Import your user.dart file
-import 'planner.dart'; // Import your planner.dart file
-import 'swipe_page.dart'; // Import your swipe_page.dart file
-import 'timetable_page.dart'; // Import the timetable_page.dart file
+import 'user.dart';
+import 'planner.dart';
+import 'swipe_page.dart';
+import 'timetable_page.dart';
 
 class FirstPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.lightBlue[900],
+        backgroundColor: Color(0xFF191970), // Midnight Blue
         title: Text(
           'BrainSwipe',
           style: TextStyle(
@@ -23,7 +23,7 @@ class FirstPage extends StatelessWidget {
           icon: Icon(
             Icons.account_circle,
             size: 34,
-            color: Colors.black,
+            color: Colors.white,
           ),
           onPressed: () {
             Navigator.push(
@@ -33,19 +33,27 @@ class FirstPage extends StatelessWidget {
           },
         ),
       ),
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Section1(),
-            SizedBox(height: 8),
-            Section2(),
-            SizedBox(height: 8),
-            Section3(),
-            SizedBox(height: 8),
-            Section4(),
-          ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFF0FFFF), Color(0xFF003366)], // Azure and Dark Blue
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Section1(),
+              SizedBox(height: 16),
+              Section2(),
+              SizedBox(height: 16),
+              Section3(),
+              SizedBox(height: 16),
+              Section4(),
+            ],
+          ),
         ),
       ),
     );
@@ -62,9 +70,9 @@ class CommonSectionContainer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
-        width: double.infinity, // Ensure the container takes full available width
+        width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.blue[100],
+          color: Colors.blue[50],
           borderRadius: BorderRadius.circular(12),
         ),
         padding: const EdgeInsets.all(16.0),
@@ -73,6 +81,7 @@ class CommonSectionContainer extends StatelessWidget {
     );
   }
 }
+
 
 class Section1 extends StatelessWidget {
   @override
@@ -99,14 +108,28 @@ class Section1 extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 16),
-          ElevatedButton(
+          ElevatedButton.icon(
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SwipePage()),
               );
             },
-            child: Text('Click Here'),
+            icon: Icon(Icons.school, size: 30),
+            label: Text(
+              'Click Here',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
           ),
         ],
       ),
@@ -139,14 +162,28 @@ class Section2 extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 16),
-          ElevatedButton(
+          ElevatedButton.icon(
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => PlannerPage()),
               );
             },
-            child: Text('Click Here'),
+            icon: Icon(Icons.calendar_today, size: 30),
+            label: Text(
+              'Click Here',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
           ),
         ],
       ),
@@ -179,14 +216,28 @@ class Section3 extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 16),
-          ElevatedButton(
+          ElevatedButton.icon(
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => TimetablePage()),
               );
             },
-            child: Text('Click Here'),
+            icon: Icon(Icons.schedule, size: 30),
+            label: Text(
+              'Click Here',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
           ),
         ],
       ),
@@ -219,17 +270,33 @@ class Section4 extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 8),
-          ElevatedButton(
+          ElevatedButton.icon(
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => TutorPage()),
               );
             },
-            child: Text('Click Here'),
+            icon: Icon(Icons.help, size: 30),
+            label: Text(
+              'Click Here',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 }
+
+// The Section1, Section2, Section3, and Section4 classes remain unchanged

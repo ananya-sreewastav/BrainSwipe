@@ -5,7 +5,7 @@ class TutorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.lightBlue[900],
+        backgroundColor: Color(0xFF191970),
         title: Text(
           'BrainSwipe',
           style: TextStyle(
@@ -54,8 +54,8 @@ class TutorPage extends StatelessWidget {
                 Navigator.pushNamed(context, '/find_tutor'); // Adjust route as necessary
               },
               style: ElevatedButton.styleFrom(
-                 // background color
-                 // text color
+                // background color
+                // text color
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                 textStyle: TextStyle(
                   fontSize: 20,

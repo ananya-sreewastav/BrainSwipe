@@ -19,7 +19,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.lightBlue[900],
+        backgroundColor: Color(0xFF191970),
         title: Text(
           'BrainSwipe',
           style: TextStyle(
