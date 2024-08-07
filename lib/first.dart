@@ -1,9 +1,11 @@
 import 'package:brainswipe/tutor_page.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'user.dart';
 import 'planner.dart';
 import 'swipe_page.dart';
 import 'timetable_page.dart';
+
 
 class FirstPage extends StatelessWidget {
   @override
@@ -13,7 +15,7 @@ class FirstPage extends StatelessWidget {
         backgroundColor: Color(0xFF191970), // Midnight Blue
         title: Text(
           'BrainSwipe',
-          style: TextStyle(
+          style: GoogleFonts.playfairDisplay(
             color: Colors.white,
             fontSize: 24,
           ),
@@ -82,7 +84,6 @@ class CommonSectionContainer extends StatelessWidget {
   }
 }
 
-
 class Section1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -91,7 +92,7 @@ class Section1 extends StatelessWidget {
         children: [
           Text(
             'WANT TO MAKE STUDYING INTERESTING?',
-            style: TextStyle(
+            style: GoogleFonts.playfairDisplay(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.black,
@@ -101,7 +102,7 @@ class Section1 extends StatelessWidget {
           SizedBox(height: 8),
           Text(
             'then use our feature and connect with your peers',
-            style: TextStyle(
+            style: GoogleFonts.openSans(
               fontSize: 14,
               color: Colors.black,
             ),
@@ -118,7 +119,7 @@ class Section1 extends StatelessWidget {
             icon: Icon(Icons.school, size: 30),
             label: Text(
               'Click Here',
-              style: TextStyle(
+              style: GoogleFonts.openSans(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -145,7 +146,7 @@ class Section2 extends StatelessWidget {
         children: [
           Text(
             'HAVE A LOT ON YOUR PLATE BUT DON\'T KNOW HOW TO REMEMBER?',
-            style: TextStyle(
+            style: GoogleFonts.playfairDisplay(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.black,
@@ -155,7 +156,7 @@ class Section2 extends StatelessWidget {
           SizedBox(height: 8),
           Text(
             'then Plan Ahead',
-            style: TextStyle(
+            style: GoogleFonts.openSans(
               fontSize: 14,
               color: Colors.black,
             ),
@@ -172,7 +173,7 @@ class Section2 extends StatelessWidget {
             icon: Icon(Icons.calendar_today, size: 30),
             label: Text(
               'Click Here',
-              style: TextStyle(
+              style: GoogleFonts.openSans(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -199,7 +200,7 @@ class Section3 extends StatelessWidget {
         children: [
           Text(
             'TIRED BY MAKING TIMETABLES? (PLUS YOU DON\'T EVEN STICK TO IT)',
-            style: TextStyle(
+            style: GoogleFonts.playfairDisplay(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.black,
@@ -209,7 +210,7 @@ class Section3 extends StatelessWidget {
           SizedBox(height: 8),
           Text(
             'then help us generate a personalized timetable',
-            style: TextStyle(
+            style: GoogleFonts.openSans(
               fontSize: 14,
               color: Colors.black,
             ),
@@ -226,7 +227,7 @@ class Section3 extends StatelessWidget {
             icon: Icon(Icons.schedule, size: 30),
             label: Text(
               'Click Here',
-              style: TextStyle(
+              style: GoogleFonts.openSans(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -253,7 +254,7 @@ class Section4 extends StatelessWidget {
         children: [
           Text(
             'NEED SOME PERSONALIZED HELP',
-            style: TextStyle(
+            style: GoogleFonts.playfairDisplay(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.black,
@@ -263,7 +264,7 @@ class Section4 extends StatelessWidget {
           SizedBox(height: 8),
           Text(
             'then use our feature and connect with your peers',
-            style: TextStyle(
+            style: GoogleFonts.openSans(
               fontSize: 14,
               color: Colors.black,
             ),
@@ -280,7 +281,7 @@ class Section4 extends StatelessWidget {
             icon: Icon(Icons.help, size: 30),
             label: Text(
               'Click Here',
-              style: TextStyle(
+              style: GoogleFonts.openSans(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -298,5 +299,3 @@ class Section4 extends StatelessWidget {
     );
   }
 }
-
-// The Section1, Section2, Section3, and Section4 classes remain unchanged

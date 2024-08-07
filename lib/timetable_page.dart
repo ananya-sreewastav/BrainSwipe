@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Subject {
   String name;
@@ -71,7 +72,7 @@ class _TimetablePageState extends State<TimetablePage> {
         backgroundColor: Color(0xFF191970),
         title: Text(
           'BrainSwipe',
-          style: TextStyle(
+          style: GoogleFonts.playfairDisplay(
             color: Colors.white,
             fontSize: 24,
           ),

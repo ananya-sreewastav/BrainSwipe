@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SwipePage extends StatefulWidget {
   @override
@@ -28,7 +29,7 @@ class _SwipePageState extends State<SwipePage> {
         backgroundColor: Color(0xFF191970),
         title: Text(
           'BrainSwipe',
-          style: TextStyle(
+          style: GoogleFonts.playfairDisplay(
             color: Colors.white,
             fontSize: 24,
           ),

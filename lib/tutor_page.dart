@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'tut.dart';
+import 'package:google_fonts/google_fonts.dart';
 class TutorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -8,7 +9,7 @@ class TutorPage extends StatelessWidget {
         backgroundColor: Color(0xFF191970),
         title: Text(
           'BrainSwipe',
-          style: TextStyle(
+          style: GoogleFonts.playfairDisplay(
             color: Colors.white,
             fontSize: 24,
           ),
@@ -25,7 +26,7 @@ class TutorPage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
-                color: Colors.lightBlue[900],
+                color: Colors.black,
               ),
             ),
           ),
@@ -37,20 +38,29 @@ class TutorPage extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 3,
-                        color: Colors.cyan.withOpacity(0.5),
-                        child: Center(
-                          child: Text(
-                            'Tutor',
-                            style: TextStyle(
-                              fontSize: 36,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                      child: GestureDetector(
+                        onTap: () {
+                          // Replace this with the navigation to your desired page
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Tut()), // Replace TuteePage() with the page you want to navigate to
+                          );
+                        },
+                        child: Container(
+                          height: MediaQuery.of(context).size.height / 3,
+                          color: Colors.cyan.withOpacity(0.5),
+                          child: Center(
+                            child: Text(
+                              'Tutor',
+                              style: TextStyle(
+                                fontSize: 36,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
+                          alignment: Alignment.centerLeft,
                         ),
-                        alignment: Alignment.centerLeft,
                       ),
                     ),
                     SizedBox(width: MediaQuery.of(context).size.width / 2), // Space for the next square
@@ -61,20 +71,26 @@ class TutorPage extends StatelessWidget {
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width / 2), // Space for the previous square
                     Expanded(
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 3,
-                        color: Colors.cyan.withOpacity(0.5),
-                        child: Center(
-                          child: Text(
-                            'Tutee',
-                            style: TextStyle(
-                              fontSize: 36,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                      child: GestureDetector(
+                        onTap: () {
+                          // Replace this with the navigation to your desired page
+
+                        },
+                        child: Container(
+                          height: MediaQuery.of(context).size.height / 3,
+                          color: Colors.cyan.withOpacity(0.5),
+                          child: Center(
+                            child: Text(
+                              'Tutee',
+                              style: TextStyle(
+                                fontSize: 36,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
+                          alignment: Alignment.centerRight,
                         ),
-                        alignment: Alignment.centerRight,
                       ),
                     ),
                   ],

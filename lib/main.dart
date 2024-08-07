@@ -7,6 +7,7 @@ import 'planner.dart';
 import 'swipe_page.dart';
 import 'timetable_page.dart';
 import 'tutor_page.dart';
+import 'tut.dart';
 
 void main() {
   runApp(MyApp());

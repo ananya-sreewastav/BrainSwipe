@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 
 class PlannerPage extends StatefulWidget {
@@ -111,7 +112,7 @@ class _PlannerPageState extends State<PlannerPage> {
         backgroundColor: Color(0xFF191970),
         title: Text(
           'BrainSwipe',
-          style: TextStyle(
+          style: GoogleFonts.playfairDisplay(
             color: Colors.white,
             fontSize: 24,
           ),

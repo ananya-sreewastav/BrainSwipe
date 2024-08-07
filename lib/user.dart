@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class UserPage extends StatelessWidget {
   @override
@@ -8,7 +9,7 @@ class UserPage extends StatelessWidget {
         backgroundColor: Color(0xFF191970),
         title: Text(
           'BrainSwipe',
-          style: TextStyle(
+          style: GoogleFonts.playfairDisplay(
             color: Colors.white,
             fontSize: 24,
           ),
