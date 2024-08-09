@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'first.dart';
 
 
 class SignPage extends StatelessWidget {
@@ -7,6 +8,10 @@ class SignPage extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+
+  void navigateToFirstPage(BuildContext context) {
+    Navigator.pushReplacementNamed(context, '/first');
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,7 +145,11 @@ class SignPage extends StatelessWidget {
                   child: ElevatedButton.icon(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        // Add sign up logic here
+                        bool isLoggedIn = true; // Replace with actual login logic
+
+                        if (isLoggedIn) {
+                          navigateToFirstPage(context); // Navigate to first page
+                        }
                       }
                     },
                     icon: Icon(Icons.check),
@@ -155,3 +164,5 @@ class SignPage extends StatelessWidget {
     );
   }
 }
+
+

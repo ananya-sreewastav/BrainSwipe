@@ -34,6 +34,7 @@ dependencies:
   table_calendar: ^3.1.2 # Make sure to include this line
   shared_preferences: ^2.0.13 # Add this line
   google_fonts: ^4.0.3
+  provider: ^6.0.3
 
 
 
