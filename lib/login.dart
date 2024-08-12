@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'sign.dart'; // Import the Sign page
+import 'sign.dart';
 import 'first.dart';
 
 class LoginPage extends StatelessWidget {
+  final Function toggleDarkMode;
+
+  LoginPage({required this.toggleDarkMode});
+
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -18,20 +22,21 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF191970),
+        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF191970),
         title: Text(
           'BrainSwipe',
           style: GoogleFonts.playfairDisplay(
-            color: Colors.white,
+            color: isDarkMode ? Colors.white : Colors.white,
             fontSize: 24,
           ),
         ),
         centerTitle: true,
-        automaticallyImplyLeading: false, // Remove the back button
+        automaticallyImplyLeading: false,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: isDarkMode ? Colors.black : Colors.white,
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(16.0),
@@ -46,6 +51,7 @@ class LoginPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
+                    color: isDarkMode ? Colors.white : Colors.black,
                   ),
                 ),
                 SizedBox(height: 20),
@@ -53,9 +59,9 @@ class LoginPage extends StatelessWidget {
                   controller: _usernameController,
                   decoration: InputDecoration(
                     labelText: 'Username',
-                    labelStyle: TextStyle(color: Colors.black),
+                    labelStyle: TextStyle(color: isDarkMode ? Colors.white70 : Colors.black),
                     border: OutlineInputBorder(),
-                    fillColor: Colors.white,
+                    fillColor: isDarkMode ? Colors.grey[800] : Colors.white,
                     filled: true,
                   ),
                   validator: (value) {
@@ -77,9 +83,9 @@ class LoginPage extends StatelessWidget {
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    labelStyle: TextStyle(color: Colors.black),
+                    labelStyle: TextStyle(color: isDarkMode ? Colors.white70 : Colors.black),
                     border: OutlineInputBorder(),
-                    fillColor: Colors.white,
+                    fillColor: isDarkMode ? Colors.grey[800] : Colors.white,
                     filled: true,
                   ),
                   validator: (value) {
@@ -100,10 +106,10 @@ class LoginPage extends StatelessWidget {
                   child: ElevatedButton.icon(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        bool isLoggedIn = true; // Replace with actual login logic
+                        bool isLoggedIn = true;
 
                         if (isLoggedIn) {
-                          navigateToFirstPage(context); // Navigate to first page
+                          navigateToFirstPage(context);
                         }
                       }
                     },
@@ -122,16 +128,22 @@ class LoginPage extends StatelessWidget {
                 Center(
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      navigateToSignUp(context); // Navigate to sign up page
+                      navigateToSignUp(context);
                     },
                     icon: Icon(Icons.check),
                     label: Text('Sign Up'),
                   ),
                 ),
-
-
-
-
+                SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      toggleDarkMode();
+                    },
+                    icon: Icon(Icons.nights_stay),
+                    label: Text('Toggle Dark Mode'),
+                  ),
+                ),
               ],
             ),
           ),
@@ -140,4 +152,3 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
-

@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
-import 'tut.dart';
+import 'tut.dart'; // Make sure to replace this with the correct import for your TuteePage
 import 'package:google_fonts/google_fonts.dart';
+
 class TutorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF191970),
+        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF191970),
         title: Text(
           'BrainSwipe',
           style: GoogleFonts.playfairDisplay(
-            color: Colors.white,
+            color: isDarkMode ? Colors.white : Colors.white,
             fontSize: 24,
           ),
         ),
         centerTitle: true,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: isDarkMode ? Colors.black : Colors.white,
       body: Column(
         children: [
           SizedBox(height: AppBar().preferredSize.height + 20), // Space below the AppBar
@@ -26,7 +29,7 @@ class TutorPage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: isDarkMode ? Colors.white : Colors.black,
               ),
             ),
           ),
@@ -40,15 +43,14 @@ class TutorPage extends StatelessWidget {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          // Replace this with the navigation to your desired page
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Tut()), // Replace TuteePage() with the page you want to navigate to
+                            MaterialPageRoute(builder: (context) => Tut()), // Replace with your TuteePage
                           );
                         },
                         child: Container(
                           height: MediaQuery.of(context).size.height / 3,
-                          color: Colors.cyan.withOpacity(0.5),
+                          color: isDarkMode ? Colors.grey[800] : Colors.cyan.withOpacity(0.5),
                           child: Center(
                             child: Text(
                               'Tutor',
@@ -74,11 +76,10 @@ class TutorPage extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           // Replace this with the navigation to your desired page
-
                         },
                         child: Container(
                           height: MediaQuery.of(context).size.height / 3,
-                          color: Colors.cyan.withOpacity(0.5),
+                          color: isDarkMode ? Colors.grey[800] : Colors.cyan.withOpacity(0.5),
                           child: Center(
                             child: Text(
                               'Tutee',

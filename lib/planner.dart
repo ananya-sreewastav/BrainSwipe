@@ -27,9 +27,6 @@ class _PlannerPageState extends State<PlannerPage> {
     final prefs = await SharedPreferences.getInstance();
     final eventsString = prefs.getString('events') ?? '{}';
 
-    // Debugging: Print loaded events
-    print('Loaded events string: $eventsString');
-
     final Map<String, dynamic> decodedEvents = json.decode(eventsString);
     setState(() {
       _events = decodedEvents.map((key, value) {
@@ -38,9 +35,6 @@ class _PlannerPageState extends State<PlannerPage> {
         return MapEntry(dateTime, eventList);
       });
     });
-
-    // Debugging: Print loaded events map
-    print('Loaded events map: $_events');
   }
 
   Future<void> _saveEvents() async {
@@ -49,23 +43,20 @@ class _PlannerPageState extends State<PlannerPage> {
       return MapEntry(key.toIso8601String(), value);
     }));
 
-    // Debugging: Print saved events
-    print('Saved events string: $eventsString');
-
     await prefs.setString('events', eventsString);
   }
 
   void _deleteEvent(int index) {
     setState(() {
       _events[_selectedDay]?.removeAt(index);
-      _saveEvents(); // Save events to local storage
+      _saveEvents();
     });
   }
 
   void _editEvent(int index, String newEvent) {
     setState(() {
       _events[_selectedDay]?[index] = newEvent;
-      _saveEvents(); // Save events to local storage
+      _saveEvents();
     });
   }
 
@@ -76,6 +67,8 @@ class _PlannerPageState extends State<PlannerPage> {
     showDialog(
       context: context,
       builder: (context) {
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
         return AlertDialog(
           title: Text('Edit Event'),
           content: TextField(
@@ -83,6 +76,8 @@ class _PlannerPageState extends State<PlannerPage> {
             decoration: InputDecoration(
               labelText: 'Event',
               border: OutlineInputBorder(),
+              fillColor: isDarkMode ? Colors.grey[800] : Colors.white,
+              filled: true,
             ),
           ),
           actions: [
@@ -107,18 +102,21 @@ class _PlannerPageState extends State<PlannerPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF191970),
+        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF191970),
         title: Text(
           'BrainSwipe',
           style: GoogleFonts.playfairDisplay(
-            color: Colors.white,
+            color: isDarkMode ? Colors.white : Colors.white,
             fontSize: 24,
           ),
         ),
         centerTitle: true,
       ),
+      backgroundColor: isDarkMode ? Colors.black : Colors.white,
       body: Column(
         children: [
           TableCalendar(
@@ -131,7 +129,6 @@ class _PlannerPageState extends State<PlannerPage> {
             },
             onDaySelected: (selectedDay, focusedDay) {
               if (selectedDay.isBefore(DateTime.now().subtract(Duration(days: 1)))) {
-                // If the selected day is before today, don't allow selection
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text("You can't select a past date."),
@@ -157,7 +154,7 @@ class _PlannerPageState extends State<PlannerPage> {
             },
             eventLoader: (day) {
               if (_events.containsKey(day)) {
-                return _events[day]!; // Use "!" to assert non-null value
+                return _events[day]!;
               } else {
                 return [];
               }
@@ -167,16 +164,19 @@ class _PlannerPageState extends State<PlannerPage> {
             int index = entry.key;
             String event = entry.value;
             return ListTile(
-              title: Text(event),
+              title: Text(
+                event,
+                style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
+              ),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: Icon(Icons.edit, color: isDarkMode ? Colors.white : Colors.black),
                     onPressed: () => _showEditDialog(index),
                   ),
                   IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: Icon(Icons.delete, color: isDarkMode ? Colors.white : Colors.black),
                     onPressed: () => _deleteEvent(index),
                   ),
                 ],
@@ -190,6 +190,8 @@ class _PlannerPageState extends State<PlannerPage> {
               decoration: InputDecoration(
                 labelText: 'Add Event',
                 border: OutlineInputBorder(),
+                fillColor: isDarkMode ? Colors.grey[800] : Colors.white,
+                filled: true,
               ),
             ),
           ),
@@ -205,10 +207,20 @@ class _PlannerPageState extends State<PlannerPage> {
                   _events[_selectedDay] = [_eventController.text];
                 }
                 _eventController.clear();
-                _saveEvents(); // Save events to local storage
+                _saveEvents();
               });
             },
-            child: Text('Add Event'),
+            child: Text(
+              'Add Event',
+              style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: isDarkMode ? Colors.grey[700] : Color(0xFF191970),
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
           ),
         ],
       ),

@@ -6,13 +6,14 @@ import 'planner.dart';
 import 'swipe_page.dart';
 import 'timetable_page.dart';
 
-
 class FirstPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF191970), // Midnight Blue
+        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF191970), // Adjusted for dark mode
         title: Text(
           'BrainSwipe',
           style: GoogleFonts.playfairDisplay(
@@ -38,7 +39,9 @@ class FirstPage extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFF0FFFF), Color(0xFF003366)], // Azure and Dark Blue
+            colors: isDarkMode
+                ? [Colors.black, Colors.grey[850]!]
+                : [Color(0xFFF0FFFF), Color(0xFF003366)], // Adjusted for dark mode
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -69,12 +72,14 @@ class CommonSectionContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.blue[50],
+          color: isDarkMode ? Colors.grey[800] : Colors.blue[50],
           borderRadius: BorderRadius.circular(12),
         ),
         padding: const EdgeInsets.all(16.0),
@@ -87,6 +92,8 @@ class CommonSectionContainer extends StatelessWidget {
 class Section1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return CommonSectionContainer(
       child: Column(
         children: [
@@ -95,7 +102,7 @@ class Section1 extends StatelessWidget {
             style: GoogleFonts.playfairDisplay(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: isDarkMode ? Colors.white : Colors.black,
             ),
             textAlign: TextAlign.center,
           ),
@@ -104,7 +111,7 @@ class Section1 extends StatelessWidget {
             'then use our feature and connect with your peers',
             style: GoogleFonts.openSans(
               fontSize: 14,
-              color: Colors.black,
+              color: isDarkMode ? Colors.white70 : Colors.black,
             ),
             textAlign: TextAlign.center,
           ),
@@ -125,12 +132,6 @@ class Section1 extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
           ),
         ],
       ),
@@ -141,6 +142,8 @@ class Section1 extends StatelessWidget {
 class Section2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return CommonSectionContainer(
       child: Column(
         children: [
@@ -149,7 +152,7 @@ class Section2 extends StatelessWidget {
             style: GoogleFonts.playfairDisplay(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: isDarkMode ? Colors.white : Colors.black,
             ),
             textAlign: TextAlign.center,
           ),
@@ -158,7 +161,7 @@ class Section2 extends StatelessWidget {
             'then Plan Ahead',
             style: GoogleFonts.openSans(
               fontSize: 14,
-              color: Colors.black,
+              color: isDarkMode ? Colors.white70 : Colors.black,
             ),
             textAlign: TextAlign.center,
           ),
@@ -179,12 +182,6 @@ class Section2 extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
           ),
         ],
       ),
@@ -195,6 +192,8 @@ class Section2 extends StatelessWidget {
 class Section3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return CommonSectionContainer(
       child: Column(
         children: [
@@ -203,7 +202,7 @@ class Section3 extends StatelessWidget {
             style: GoogleFonts.playfairDisplay(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: isDarkMode ? Colors.white : Colors.black,
             ),
             textAlign: TextAlign.center,
           ),
@@ -212,7 +211,7 @@ class Section3 extends StatelessWidget {
             'then help us generate a personalized timetable',
             style: GoogleFonts.openSans(
               fontSize: 14,
-              color: Colors.black,
+              color: isDarkMode ? Colors.white70 : Colors.black,
             ),
             textAlign: TextAlign.center,
           ),
@@ -233,12 +232,6 @@ class Section3 extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
           ),
         ],
       ),
@@ -249,6 +242,8 @@ class Section3 extends StatelessWidget {
 class Section4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return CommonSectionContainer(
       child: Column(
         children: [
@@ -257,7 +252,7 @@ class Section4 extends StatelessWidget {
             style: GoogleFonts.playfairDisplay(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: isDarkMode ? Colors.white : Colors.black,
             ),
             textAlign: TextAlign.center,
           ),
@@ -266,7 +261,7 @@ class Section4 extends StatelessWidget {
             'then use our feature and connect with your peers',
             style: GoogleFonts.openSans(
               fontSize: 14,
-              color: Colors.black,
+              color: isDarkMode ? Colors.white70 : Colors.black,
             ),
             textAlign: TextAlign.center,
           ),
@@ -287,17 +282,9 @@ class Section4 extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
           ),
         ],
       ),
     );
   }
 }
-
-

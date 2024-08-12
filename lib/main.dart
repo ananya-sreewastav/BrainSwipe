@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'login.dart';
 import 'sign.dart';
 import 'first.dart';
@@ -13,26 +14,50 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _isDarkMode = false;
+
+  void _toggleDarkMode() {
+    setState(() {
+      _isDarkMode = !_isDarkMode;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'BrainSwipe App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      initialRoute: '/', // Set the initial route
+      theme: _isDarkMode ? _darkTheme : _lightTheme,
+      initialRoute: '/',
       routes: {
-        '/': (context) => LoginPage(), // Route for login page
-        '/sign': (context) => SignPage(), // Route for sign up page
-        '/first': (context) => FirstPage(), // Route for first page
-        '/user': (context) => UserPage(), // Route for user page
-        '/planner': (context) => PlannerPage(), // Route for planner page
-        '/swipe': (context) => SwipePage(), // Route for swipe page
-        '/tutor': (context) => TutorPage(), // Route for tutor page
-        '/timetable': (context) => TimetablePage(), // Route for timetable page
-        // Add routes for additional pages as needed
+        '/': (context) => LoginPage(toggleDarkMode: _toggleDarkMode),
+        '/sign': (context) => SignPage(),
+        '/first': (context) => FirstPage(),
+        '/user': (context) => UserPage(),
+        '/planner': (context) => PlannerPage(),
+        '/swipe': (context) => SwipePage(),
+        '/tutor': (context) => TutorPage(),
+        '/timetable': (context) => TimetablePage(),
       },
+    );
+  }
+
+  ThemeData get _lightTheme {
+    return ThemeData(
+      primarySwatch: Colors.blue,
+      brightness: Brightness.light,
+    );
+  }
+
+  ThemeData get _darkTheme {
+    return ThemeData(
+      primarySwatch: Colors.blue,
+      brightness: Brightness.dark,
     );
   }
 }

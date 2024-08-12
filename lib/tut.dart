@@ -8,6 +8,8 @@ class Tut extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     // Get the screen width and height
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -18,16 +20,17 @@ class Tut extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF191970),
+        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF191970),
         title: Text(
           'BrainSwipe',
           style: GoogleFonts.playfairDisplay(
-            color: Colors.white,
-            fontSize: fontSize,
+            color: isDarkMode ? Colors.white : Colors.white,
+            fontSize: 24,
           ),
         ),
         centerTitle: true,
       ),
+      backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
       body: SingleChildScrollView(
         padding: EdgeInsets.all(padding),
         child: Form(
@@ -39,6 +42,7 @@ class Tut extends StatelessWidget {
               Card(
                 elevation: 3,
                 margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
+                color: isDarkMode ? Colors.grey[800] : Colors.white,
                 child: Padding(
                   padding: EdgeInsets.all(padding),
                   child: Column(
@@ -49,11 +53,12 @@ class Tut extends StatelessWidget {
                         style: TextStyle(
                           fontSize: fontSize,
                           fontWeight: FontWeight.bold,
+                          color: isDarkMode ? Colors.white : Colors.black,
                         ),
                       ),
                       SizedBox(height: screenHeight * 0.01),
                       TextFormField(
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'e.g., Math',
                         ),
@@ -67,10 +72,13 @@ class Tut extends StatelessWidget {
                       SizedBox(height: screenHeight * 0.02),
                       Text(
                         'Aggregate Semester Marks',
-                        style: TextStyle(fontSize: fontSize),
+                        style: TextStyle(
+                          fontSize: fontSize,
+                          color: isDarkMode ? Colors.white : Colors.black,
+                        ),
                       ),
                       TextFormField(
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'e.g., 85%',
                         ),
@@ -85,10 +93,13 @@ class Tut extends StatelessWidget {
                       SizedBox(height: screenHeight * 0.02),
                       Text(
                         'Proficiency Level',
-                        style: TextStyle(fontSize: fontSize),
+                        style: TextStyle(
+                          fontSize: fontSize,
+                          color: isDarkMode ? Colors.white : Colors.black,
+                        ),
                       ),
                       DropdownButtonFormField<String>(
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: OutlineInputBorder(),
                         ),
                         items: ['Beginner', 'Intermediate', 'Advanced']
@@ -114,6 +125,7 @@ class Tut extends StatelessWidget {
               Card(
                 elevation: 3,
                 margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
+                color: isDarkMode ? Colors.grey[800] : Colors.white,
                 child: Padding(
                   padding: EdgeInsets.all(padding),
                   child: Column(
@@ -124,11 +136,12 @@ class Tut extends StatelessWidget {
                         style: TextStyle(
                           fontSize: fontSize,
                           fontWeight: FontWeight.bold,
+                          color: isDarkMode ? Colors.white : Colors.black,
                         ),
                       ),
                       SizedBox(height: screenHeight * 0.01),
                       TextFormField(
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'e.g., Science',
                         ),
@@ -142,10 +155,13 @@ class Tut extends StatelessWidget {
                       SizedBox(height: screenHeight * 0.02),
                       Text(
                         'Aggregate Semester Marks',
-                        style: TextStyle(fontSize: fontSize),
+                        style: TextStyle(
+                          fontSize: fontSize,
+                          color: isDarkMode ? Colors.white : Colors.black,
+                        ),
                       ),
                       TextFormField(
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'e.g., 90%',
                         ),
@@ -160,10 +176,13 @@ class Tut extends StatelessWidget {
                       SizedBox(height: screenHeight * 0.02),
                       Text(
                         'Proficiency Level',
-                        style: TextStyle(fontSize: fontSize),
+                        style: TextStyle(
+                          fontSize: fontSize,
+                          color: isDarkMode ? Colors.white : Colors.black,
+                        ),
                       ),
                       DropdownButtonFormField<String>(
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: OutlineInputBorder(),
                         ),
                         items: ['Beginner', 'Intermediate', 'Advanced']
@@ -189,6 +208,7 @@ class Tut extends StatelessWidget {
               Card(
                 elevation: 3,
                 margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
+                color: isDarkMode ? Colors.grey[800] : Colors.white,
                 child: Padding(
                   padding: EdgeInsets.all(padding),
                   child: Column(
@@ -199,11 +219,12 @@ class Tut extends StatelessWidget {
                         style: TextStyle(
                           fontSize: fontSize,
                           fontWeight: FontWeight.bold,
+                          color: isDarkMode ? Colors.white : Colors.black,
                         ),
                       ),
                       SizedBox(height: screenHeight * 0.01),
                       TextFormField(
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'e.g., Certified Math Tutor',
                         ),
@@ -211,7 +232,6 @@ class Tut extends StatelessWidget {
                       SizedBox(height: screenHeight * 0.02),
                       ElevatedButton.icon(
                         onPressed: () async {
-                          // Allow the user to pick a file (for uploading certificate)
                           FilePickerResult? result =
                           await FilePicker.platform.pickFiles();
 
@@ -223,7 +243,7 @@ class Tut extends StatelessWidget {
                         icon: const Icon(Icons.upload_file),
                         label: const Text('Upload Certificate'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFB3E5FC), // Updated property
+                          backgroundColor: isDarkMode ? Colors.grey[700] : const Color(0xFFB3E5FC),
                         ),
                       ),
                       if (_certificatePath != null)
@@ -231,7 +251,10 @@ class Tut extends StatelessWidget {
                           padding: EdgeInsets.only(top: screenHeight * 0.01),
                           child: Text(
                             'Uploaded: ${_certificatePath!.split('/').last}',
-                            style: TextStyle(fontSize: fontSize * 0.9),
+                            style: TextStyle(
+                              fontSize: fontSize * 0.9,
+                              color: isDarkMode ? Colors.white : Colors.black,
+                            ),
                           ),
                         ),
                     ],
@@ -250,7 +273,7 @@ class Tut extends StatelessWidget {
                   },
                   child: const Text('Submit'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF191970), // Updated property
+                    backgroundColor: isDarkMode ? Colors.grey[800] : const Color(0xFF191970),
                     padding: EdgeInsets.symmetric(
                       horizontal: screenWidth * 0.2,
                       vertical: screenHeight * 0.02,

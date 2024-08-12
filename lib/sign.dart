@@ -2,31 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'first.dart';
 
-
 class SignPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-
   void navigateToFirstPage(BuildContext context) {
     Navigator.pushReplacementNamed(context, '/first');
   }
+
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF191970),
+        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF191970),
         title: Text(
           'BrainSwipe',
           style: GoogleFonts.playfairDisplay(
-            color: Colors.white,
+            color: isDarkMode ? Colors.white : Colors.white,
             fontSize: 24,
           ),
         ),
         centerTitle: true,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: isDarkMode ? Colors.black : Colors.white,
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(16.0),
@@ -41,15 +42,16 @@ class SignPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
+                    color: isDarkMode ? Colors.white : Colors.black,
                   ),
                 ),
                 SizedBox(height: 20),
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'First Name',
-                    labelStyle: TextStyle(color: Colors.black),
+                    labelStyle: TextStyle(color: isDarkMode ? Colors.white70 : Colors.black),
                     border: OutlineInputBorder(),
-                    fillColor: Colors.white,
+                    fillColor: isDarkMode ? Colors.grey[800] : Colors.white,
                     filled: true,
                   ),
                 ),
@@ -57,9 +59,9 @@ class SignPage extends StatelessWidget {
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Last Name',
-                    labelStyle: TextStyle(color: Colors.black),
+                    labelStyle: TextStyle(color: isDarkMode ? Colors.white70 : Colors.black),
                     border: OutlineInputBorder(),
-                    fillColor: Colors.white,
+                    fillColor: isDarkMode ? Colors.grey[800] : Colors.white,
                     filled: true,
                   ),
                 ),
@@ -68,9 +70,9 @@ class SignPage extends StatelessWidget {
                   controller: _usernameController,
                   decoration: InputDecoration(
                     labelText: 'Username',
-                    labelStyle: TextStyle(color: Colors.black),
+                    labelStyle: TextStyle(color: isDarkMode ? Colors.white70 : Colors.black),
                     border: OutlineInputBorder(),
-                    fillColor: Colors.white,
+                    fillColor: isDarkMode ? Colors.grey[800] : Colors.white,
                     filled: true,
                   ),
                   validator: (value) {
@@ -90,9 +92,9 @@ class SignPage extends StatelessWidget {
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Department',
-                    labelStyle: TextStyle(color: Colors.black),
+                    labelStyle: TextStyle(color: isDarkMode ? Colors.white70 : Colors.black),
                     border: OutlineInputBorder(),
-                    fillColor: Colors.white,
+                    fillColor: isDarkMode ? Colors.grey[800] : Colors.white,
                     filled: true,
                   ),
                 ),
@@ -100,9 +102,9 @@ class SignPage extends StatelessWidget {
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Course',
-                    labelStyle: TextStyle(color: Colors.black),
+                    labelStyle: TextStyle(color: isDarkMode ? Colors.white70 : Colors.black),
                     border: OutlineInputBorder(),
-                    fillColor: Colors.white,
+                    fillColor: isDarkMode ? Colors.grey[800] : Colors.white,
                     filled: true,
                   ),
                 ),
@@ -110,9 +112,9 @@ class SignPage extends StatelessWidget {
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Year',
-                    labelStyle: TextStyle(color: Colors.black),
+                    labelStyle: TextStyle(color: isDarkMode ? Colors.white70 : Colors.black),
                     border: OutlineInputBorder(),
-                    fillColor: Colors.white,
+                    fillColor: isDarkMode ? Colors.grey[800] : Colors.white,
                     filled: true,
                   ),
                 ),
@@ -122,9 +124,9 @@ class SignPage extends StatelessWidget {
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    labelStyle: TextStyle(color: Colors.black),
+                    labelStyle: TextStyle(color: isDarkMode ? Colors.white70 : Colors.black),
                     border: OutlineInputBorder(),
-                    fillColor: Colors.white,
+                    fillColor: isDarkMode ? Colors.grey[800] : Colors.white,
                     filled: true,
                   ),
                   validator: (value) {
@@ -164,5 +166,3 @@ class SignPage extends StatelessWidget {
     );
   }
 }
-
-

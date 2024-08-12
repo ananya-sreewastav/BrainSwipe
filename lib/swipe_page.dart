@@ -57,18 +57,21 @@ class _SwipePageState extends State<SwipePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF191970),
+        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF191970),
         title: Text(
           'BrainSwipe',
           style: GoogleFonts.playfairDisplay(
-            color: Colors.white,
+            color: isDarkMode ? Colors.white : Colors.black,
             fontSize: 24,
           ),
         ),
         centerTitle: true,
       ),
+      backgroundColor: isDarkMode ? Colors.black : Colors.white,
       body: GestureDetector(
         onHorizontalDragEnd: _onHorizontalDrag,
         child: Stack(
@@ -81,6 +84,7 @@ class _SwipePageState extends State<SwipePage> {
                 venue: studyGroups[index]['venue']!,
                 date: studyGroups[index]['date']!,
                 isVisible: index == currentIndex,
+                isDarkMode: isDarkMode,
               );
             }),
             if (swipeDirection.isNotEmpty)
@@ -89,7 +93,7 @@ class _SwipePageState extends State<SwipePage> {
                 child: Text(
                   swipeDirection,
                   style: GoogleFonts.roboto(
-                    color: Colors.black,
+                    color: isDarkMode ? Colors.white : Colors.black,
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
                   ),
@@ -107,6 +111,7 @@ class _SwipePageState extends State<SwipePage> {
     required String venue,
     required String date,
     required bool isVisible,
+    required bool isDarkMode,
   }) {
     return AnimatedPositioned(
       duration: Duration(milliseconds: 300),
@@ -118,11 +123,11 @@ class _SwipePageState extends State<SwipePage> {
           width: 300,
           height: 450,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: isDarkMode ? Colors.grey[900] : Colors.white,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black26,
+                color: isDarkMode ? Colors.white24 : Colors.black26,
                 blurRadius: 10,
                 offset: Offset(0, 10),
               ),
@@ -137,7 +142,7 @@ class _SwipePageState extends State<SwipePage> {
             width: double.infinity,
             padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-              color: Colors.black54,
+              color: isDarkMode ? Colors.black54 : Colors.black54,
               borderRadius: BorderRadius.vertical(
                 bottom: Radius.circular(20),
               ),

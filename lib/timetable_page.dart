@@ -15,10 +15,8 @@ Map<String, List<String>> generateTimetable(List<Subject> subjects) {
     'Wednesday': [],
     'Thursday': [],
     'Friday': [],
-    'Saturday':[],
-    'Sunday':[],
-
-   
+    'Saturday': [],
+    'Sunday': [],
   };
 
   subjects.forEach((subject) {
@@ -67,20 +65,21 @@ class _TimetablePageState extends State<TimetablePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF191970),
+        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF191970),
         title: Text(
           'BrainSwipe',
           style: GoogleFonts.playfairDisplay(
-            color: Colors.white,
+            color: isDarkMode ? Colors.white : Colors.black,
             fontSize: 24,
           ),
         ),
         centerTitle: true,
-
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: isDarkMode ? Colors.black : Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -91,27 +90,69 @@ class _TimetablePageState extends State<TimetablePage> {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: isDarkMode ? Colors.white : Colors.black,
               ),
             ),
             TextField(
               controller: _subjectController,
-              decoration: InputDecoration(labelText: 'Subject Name'),
+              decoration: InputDecoration(
+                labelText: 'Subject Name',
+                labelStyle: TextStyle(
+                  color: isDarkMode ? Colors.white70 : Colors.black54,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: isDarkMode ? Colors.white54 : Colors.black54,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
+                ),
+              ),
+              style: TextStyle(
+                color: isDarkMode ? Colors.white : Colors.black,
+              ),
             ),
             TextField(
               controller: _hoursController,
-              decoration: InputDecoration(labelText: 'Hours Per Day'),
+              decoration: InputDecoration(
+                labelText: 'Hours Per Day',
+                labelStyle: TextStyle(
+                  color: isDarkMode ? Colors.white70 : Colors.black54,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: isDarkMode ? Colors.white54 : Colors.black54,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
+                ),
+              ),
               keyboardType: TextInputType.number,
+              style: TextStyle(
+                color: isDarkMode ? Colors.white : Colors.black,
+              ),
             ),
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: _addSubject,
               child: Text('Add Subject'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isDarkMode ? Colors.grey[800] : Color(0xFF191970),
+              ),
             ),
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: _generateTimetable,
               child: Text('Generate Timetable'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isDarkMode ? Colors.grey[800] : Color(0xFF191970),
+              ),
             ),
             SizedBox(height: 16),
             Expanded(
@@ -122,9 +163,20 @@ class _TimetablePageState extends State<TimetablePage> {
                   List<String> subjects = _timetable[day] ?? [];
 
                   return Card(
+                    color: isDarkMode ? Colors.grey[800] : Colors.white,
                     child: ListTile(
-                      title: Text(day),
-                      subtitle: Text(subjects.join(', ')),
+                      title: Text(
+                        day,
+                        style: TextStyle(
+                          color: isDarkMode ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      subtitle: Text(
+                        subjects.join(', '),
+                        style: TextStyle(
+                          color: isDarkMode ? Colors.white70 : Colors.black54,
+                        ),
+                      ),
                     ),
                   );
                 },

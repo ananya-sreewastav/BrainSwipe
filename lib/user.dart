@@ -4,9 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 class UserPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF191970),
+        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF191970),
         title: Text(
           'BrainSwipe',
           style: GoogleFonts.playfairDisplay(
@@ -16,7 +18,7 @@ class UserPage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -27,7 +29,7 @@ class UserPage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: isDarkMode ? Colors.white : Colors.black,
               ),
             ),
             SizedBox(height: 20),
@@ -36,22 +38,22 @@ class UserPage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: isDarkMode ? Colors.white : Colors.black,
               ),
             ),
             SizedBox(height: 10),
-            _buildStudyGroupBoxes(3), // Replace with the actual number of past study groups
+            _buildStudyGroupBoxes(3, isDarkMode), // Adjust the number as needed
             SizedBox(height: 20),
             Text(
               'Upcoming Study Groups:',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: isDarkMode ? Colors.white : Colors.black,
               ),
             ),
             SizedBox(height: 10),
-            _buildStudyGroupBoxes(3), // Replace with the actual number of upcoming study groups
+            _buildStudyGroupBoxes(3, isDarkMode), // Adjust the number as needed
             Spacer(),
             Center(
               child: ElevatedButton(
@@ -59,6 +61,9 @@ class UserPage extends StatelessWidget {
                   Navigator.pushReplacementNamed(context, '/'); // Navigate to login page
                 },
                 child: Text('Logout'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: isDarkMode ? Colors.grey[800] : Color(0xFF191970),
+                ),
               ),
             ),
           ],
@@ -67,17 +72,30 @@ class UserPage extends StatelessWidget {
     );
   }
 
-  Widget _buildStudyGroupBoxes(int count) {
+  Widget _buildStudyGroupBoxes(int count, bool isDarkMode) {
     return Column(
       children: List.generate(count, (index) {
         return Container(
           margin: EdgeInsets.symmetric(vertical: 5),
           height: 50,
-          color: Colors.blue[100],
+          decoration: BoxDecoration(
+            color: isDarkMode ? Colors.grey[800] : Colors.blue[100],
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 4,
+                offset: Offset(2, 2),
+              ),
+            ],
+          ),
           child: Center(
             child: Text(
               'Study Group ${index + 1}',
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(
+                color: isDarkMode ? Colors.white : Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         );
