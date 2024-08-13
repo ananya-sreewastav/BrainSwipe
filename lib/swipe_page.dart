@@ -65,7 +65,7 @@ class _SwipePageState extends State<SwipePage> {
         title: Text(
           'BrainSwipe',
           style: GoogleFonts.playfairDisplay(
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: Colors.white,
             fontSize: 24,
           ),
         ),

@@ -9,6 +9,8 @@ import 'swipe_page.dart';
 import 'timetable_page.dart';
 import 'tutor_page.dart';
 import 'tut.dart';
+import 'create.dart';
+import 'form.dart';
 
 void main() {
   runApp(MyApp());
@@ -43,6 +45,7 @@ class _MyAppState extends State<MyApp> {
         '/swipe': (context) => SwipePage(),
         '/tutor': (context) => TutorPage(),
         '/timetable': (context) => TimetablePage(),
+        '/tut': (context) => Tut(),
       },
     );
   }
