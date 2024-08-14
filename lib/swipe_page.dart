@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'cart_page.dart';
 
 class SwipePage extends StatefulWidget {
   @override
@@ -9,6 +10,7 @@ class SwipePage extends StatefulWidget {
 class _SwipePageState extends State<SwipePage> {
   int currentIndex = 0;
   String swipeDirection = '';
+  List<Map<String, String>> interestedGroups = [];
 
   final List<Map<String, String>> studyGroups = [
     {
@@ -32,14 +34,15 @@ class _SwipePageState extends State<SwipePage> {
   ];
 
   void _onHorizontalDrag(DragEndDetails details) {
-    if (details.primaryVelocity! > 0) {
+    if (details.primaryVelocity! > 0) { // Swipe right
       setState(() {
         swipeDirection = 'Interested';
+        interestedGroups.add(studyGroups[currentIndex]); // Store interested group
         if (currentIndex < studyGroups.length - 1) {
           currentIndex++;
         }
       });
-    } else if (details.primaryVelocity! < 0) {
+    } else if (details.primaryVelocity! < 0) { // Swipe left
       setState(() {
         swipeDirection = 'Not interested';
         if (currentIndex < studyGroups.length - 1) {
@@ -70,6 +73,19 @@ class _SwipePageState extends State<SwipePage> {
           ),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.shopping_cart),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CartPage(cartItems: interestedGroups),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       backgroundColor: isDarkMode ? Colors.black : Colors.white,
       body: GestureDetector(

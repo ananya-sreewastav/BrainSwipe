@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'congratulations_page.dart'; // Import the CongratulationsPage
 
 class CreateStudyGroupForm extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -125,8 +126,21 @@ class CreateStudyGroupForm extends StatelessWidget {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Creating Study Group...')),
+                      SnackBar(
+                        content: Text('Creating Study Group...'),
+                        duration: Duration(seconds: 2),
+                      ),
                     );
+
+                    // Navigate to the CongratulationsPage after a delay
+                    Future.delayed(Duration(seconds: 2), () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CongratulationsPage(),
+                        ),
+                      );
+                    });
                   }
                 },
                 child: Text(

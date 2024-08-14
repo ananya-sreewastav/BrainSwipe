@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'form.dart'; // Import the forms.dart file
+import 'swipe_page.dart';
 
 class Create extends StatelessWidget {
   @override
@@ -84,7 +85,12 @@ class Create extends StatelessWidget {
                 child: InkWell(
                   onTap: () {
                     // Navigate to the Join Study Group page
-                    Navigator.pushNamed(context, '/joinStudyGroup');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SwipePage(),
+                      ),
+                    );
                   },
                   child: SizedBox(
                     width: double.infinity,
@@ -125,3 +131,5 @@ class Create extends StatelessWidget {
     );
   }
 }
+
+

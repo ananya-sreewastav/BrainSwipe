@@ -11,7 +11,8 @@ import 'tutor_page.dart';
 import 'tut.dart';
 import 'create.dart';
 import 'form.dart';
-
+import 'cart_page.dart';
+import 'congratulations_page.dart';
 void main() {
   runApp(MyApp());
 }
