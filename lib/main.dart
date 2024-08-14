@@ -1,4 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'login.dart';
 import 'sign.dart';
@@ -10,8 +12,15 @@ import 'timetable_page.dart';
 import 'tutor_page.dart';
 import 'tut.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter bindings are initialized
+  try {
+    await Firebase.initializeApp(); // Initialize Firebase
+    print("Success connected to Firebase");
+  } catch (e) {
+    print("Error: $e");
+  }
+  runApp(MyApp()); // Run the app
 }
 
 class MyApp extends StatefulWidget {

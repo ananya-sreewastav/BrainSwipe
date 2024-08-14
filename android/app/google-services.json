@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "746344704147",
+    "project_id": "brainswipe-test",
+    "storage_bucket": "brainswipe-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746344704147:android:7ad3fb9242a21133ae4566",
+        "android_client_info": {
+          "package_name": "com.example.brainswipe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcNdhnAqX-7YTTdVm3xnDh4eTtDGk5P8w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
