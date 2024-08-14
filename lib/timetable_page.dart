@@ -73,7 +73,7 @@ class _TimetablePageState extends State<TimetablePage> {
         title: Text(
           'BrainSwipe',
           style: GoogleFonts.playfairDisplay(
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: Colors.white,
             fontSize: 24,
           ),
         ),

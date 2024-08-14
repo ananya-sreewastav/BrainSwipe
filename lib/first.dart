@@ -1,3 +1,4 @@
+import 'package:brainswipe/create.dart';
 import 'package:brainswipe/tutor_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -120,7 +121,7 @@ class Section1 extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SwipePage()),
+                MaterialPageRoute(builder: (context) => Create()),
               );
             },
             icon: Icon(Icons.school, size: 30),
