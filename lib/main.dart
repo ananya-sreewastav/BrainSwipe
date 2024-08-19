@@ -15,7 +15,15 @@ import 'tut.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter bindings are initialized
   try {
-    await Firebase.initializeApp(); // Initialize Firebase
+    await Firebase.initializeApp(
+      options: FirebaseOptions(
+        apiKey: "AIzaSyDcNdhnAqX-7YTTdVm3xnDh4eTtDGk5P8w",
+        appId: "1:746344704147:android:7ad3fb9242a21133ae4566",
+        messagingSenderId: "746344704147",
+        projectId: "brainswipe-test",
+        storageBucket: "brainswipe-test.appspot.com",
+      ),
+    ); // Initialize Firebase
     print("Success connected to Firebase");
   } catch (e) {
     print("Error: $e");

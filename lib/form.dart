@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'congratulations_page.dart'; // Import the CongratulationsPage
 
@@ -13,7 +15,7 @@ class CreateStudyGroupForm extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF191970),
         title: Text(
-          'Create Study Group',
+          'BrainSwipe',
           style: GoogleFonts.playfairDisplay(
             color: Colors.white,
             fontSize: 24,

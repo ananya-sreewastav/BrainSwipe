@@ -17,7 +17,8 @@ dependencies:
   cupertino_icons: ^1.0.6
   file_picker: ^5.2.0
   firebase_core: ^3.3.0
-  #firebase_auth: ^4.5.0
+  firebase_auth: ^5.1.4
+  cloud_firestore: ^5.2.1
    # Correct placement and indentation
 
 dev_dependencies:
