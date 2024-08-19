@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class PlannerPage extends StatefulWidget {
   @override
@@ -16,48 +16,121 @@ class _PlannerPageState extends State<PlannerPage> {
   Map<DateTime, List<String>> _events = {};
 
   TextEditingController _eventController = TextEditingController();
+  User? _currentUser;
 
   @override
   void initState() {
     super.initState();
+    _currentUser = FirebaseAuth.instance.currentUser;
     _loadEvents();
   }
 
   Future<void> _loadEvents() async {
-    final prefs = await SharedPreferences.getInstance();
-    final eventsString = prefs.getString('events') ?? '{}';
+    if (_currentUser == null) return;
 
-    final Map<String, dynamic> decodedEvents = json.decode(eventsString);
+    final userEmail = _currentUser!.email;
+    if (userEmail == null) return;
+
+    final eventsCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userEmail)
+        .collection('events');
+
+    final snapshot = await eventsCollection.get();
+    final eventsMap = <DateTime, List<String>>{};
+
+    for (var doc in snapshot.docs) {
+      final data = doc.data();
+      final eventDate = (data['eventDate'] as Timestamp).toDate();
+      final eventDescription = data['eventDescription'] as String;
+
+      if (!eventsMap.containsKey(eventDate)) {
+        eventsMap[eventDate] = [];
+      }
+      eventsMap[eventDate]?.add(eventDescription);
+    }
+
     setState(() {
-      _events = decodedEvents.map((key, value) {
-        final dateTime = DateTime.parse(key);
-        final eventList = List<String>.from(value);
-        return MapEntry(dateTime, eventList);
+      _events = eventsMap;
+    });
+  }
+
+  Future<void> _saveEvent(String eventDescription) async {
+    if (_currentUser == null) return;
+
+    final userEmail = _currentUser!.email;
+    if (userEmail == null) return;
+
+    final eventsCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userEmail)
+        .collection('events');
+
+    await eventsCollection.add({
+      'eventDate': _selectedDay,
+      'eventDescription': eventDescription,
+    });
+
+    setState(() {
+      if (_events[_selectedDay] != null) {
+        _events[_selectedDay]?.add(eventDescription);
+      } else {
+        _events[_selectedDay] = [eventDescription];
+      }
+      _eventController.clear();
+    });
+  }
+
+  Future<void> _deleteEvent(int index) async {
+    if (_currentUser == null) return;
+
+    final userEmail = _currentUser!.email;
+    if (userEmail == null) return;
+
+    final eventsCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userEmail)
+        .collection('events');
+
+    final querySnapshot = await eventsCollection
+        .where('eventDate', isEqualTo: _selectedDay)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      final docToDelete = querySnapshot.docs[index];
+      await eventsCollection.doc(docToDelete.id).delete();
+
+      setState(() {
+        _events[_selectedDay]?.removeAt(index);
       });
-    });
+    }
   }
 
-  Future<void> _saveEvents() async {
-    final prefs = await SharedPreferences.getInstance();
-    final eventsString = json.encode(_events.map((key, value) {
-      return MapEntry(key.toIso8601String(), value);
-    }));
+  void _editEvent(int index, String newEvent) async {
+    if (_currentUser == null) return;
 
-    await prefs.setString('events', eventsString);
-  }
+    final userEmail = _currentUser!.email;
+    if (userEmail == null) return;
 
-  void _deleteEvent(int index) {
-    setState(() {
-      _events[_selectedDay]?.removeAt(index);
-      _saveEvents();
-    });
-  }
+    final eventsCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userEmail)
+        .collection('events');
 
-  void _editEvent(int index, String newEvent) {
-    setState(() {
-      _events[_selectedDay]?[index] = newEvent;
-      _saveEvents();
-    });
+    final querySnapshot = await eventsCollection
+        .where('eventDate', isEqualTo: _selectedDay)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      final docToUpdate = querySnapshot.docs[index];
+      await eventsCollection.doc(docToUpdate.id).update({
+        'eventDescription': newEvent,
+      });
+
+      setState(() {
+        _events[_selectedDay]?[index] = newEvent;
+      });
+    }
   }
 
   void _showEditDialog(int index) {
@@ -200,15 +273,7 @@ class _PlannerPageState extends State<PlannerPage> {
               if (_eventController.text.isEmpty) {
                 return;
               }
-              setState(() {
-                if (_events[_selectedDay] != null) {
-                  _events[_selectedDay]?.add(_eventController.text);
-                } else {
-                  _events[_selectedDay] = [_eventController.text];
-                }
-                _eventController.clear();
-                _saveEvents();
-              });
+              _saveEvent(_eventController.text);
             },
             child: Text(
               'Add Event',
