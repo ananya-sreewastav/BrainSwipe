@@ -25,6 +25,10 @@ class _PlannerPageState extends State<PlannerPage> {
     _loadEvents();
   }
 
+  DateTime _normalizeDate(DateTime date) {
+    return DateTime(date.year, date.month, date.day);
+  }
+
   Future<void> _loadEvents() async {
     if (_currentUser == null) return;
 
@@ -36,23 +40,30 @@ class _PlannerPageState extends State<PlannerPage> {
         .doc(userEmail)
         .collection('events');
 
-    final snapshot = await eventsCollection.get();
-    final eventsMap = <DateTime, List<String>>{};
+    try {
+      final snapshot = await eventsCollection.get();
+      final eventsMap = <DateTime, List<String>>{};
 
-    for (var doc in snapshot.docs) {
-      final data = doc.data();
-      final eventDate = (data['eventDate'] as Timestamp).toDate();
-      final eventDescription = data['eventDescription'] as String;
+      for (var doc in snapshot.docs) {
+        final data = doc.data();
+        final eventDate = (data['eventDate'] as Timestamp).toDate();
+        final eventDescription = data['eventDescription'] as String;
 
-      if (!eventsMap.containsKey(eventDate)) {
-        eventsMap[eventDate] = [];
+        final normalizedDate = _normalizeDate(eventDate);
+
+        if (!eventsMap.containsKey(normalizedDate)) {
+          eventsMap[normalizedDate] = [];
+        }
+        eventsMap[normalizedDate]?.add(eventDescription);
       }
-      eventsMap[eventDate]?.add(eventDescription);
-    }
 
-    setState(() {
-      _events = eventsMap;
-    });
+      setState(() {
+        _events = eventsMap;
+        print("Events loaded: $_events");
+      });
+    } catch (e) {
+      print('Error loading events: $e');
+    }
   }
 
   Future<void> _saveEvent(String eventDescription) async {
@@ -66,19 +77,25 @@ class _PlannerPageState extends State<PlannerPage> {
         .doc(userEmail)
         .collection('events');
 
-    await eventsCollection.add({
-      'eventDate': _selectedDay,
-      'eventDescription': eventDescription,
-    });
+    try {
+      await eventsCollection.add({
+        'eventDate': Timestamp.fromDate(_normalizeDate(_selectedDay)),
+        'eventDescription': eventDescription,
+      });
 
-    setState(() {
-      if (_events[_selectedDay] != null) {
-        _events[_selectedDay]?.add(eventDescription);
-      } else {
-        _events[_selectedDay] = [eventDescription];
-      }
-      _eventController.clear();
-    });
+      setState(() {
+        final normalizedDate = _normalizeDate(_selectedDay);
+        if (_events[normalizedDate] != null) {
+          _events[normalizedDate]?.add(eventDescription);
+        } else {
+          _events[normalizedDate] = [eventDescription];
+        }
+        _eventController.clear();
+        print("Event saved: $_events");
+      });
+    } catch (e) {
+      print('Error saving event: $e');
+    }
   }
 
   Future<void> _deleteEvent(int index) async {
@@ -92,17 +109,26 @@ class _PlannerPageState extends State<PlannerPage> {
         .doc(userEmail)
         .collection('events');
 
-    final querySnapshot = await eventsCollection
-        .where('eventDate', isEqualTo: _selectedDay)
-        .get();
+    try {
+      final querySnapshot = await eventsCollection
+          .where('eventDate', isEqualTo: Timestamp.fromDate(_normalizeDate(_selectedDay)))
+          .get();
 
-    if (querySnapshot.docs.isNotEmpty) {
-      final docToDelete = querySnapshot.docs[index];
-      await eventsCollection.doc(docToDelete.id).delete();
+      if (querySnapshot.docs.isNotEmpty) {
+        final docToDelete = querySnapshot.docs[index];
+        await eventsCollection.doc(docToDelete.id).delete();
 
-      setState(() {
-        _events[_selectedDay]?.removeAt(index);
-      });
+        setState(() {
+          final normalizedDate = _normalizeDate(_selectedDay);
+          _events[normalizedDate]?.removeAt(index);
+          if (_events[normalizedDate]?.isEmpty ?? true) {
+            _events.remove(normalizedDate);
+          }
+          print("Event deleted: $_events");
+        });
+      }
+    } catch (e) {
+      print('Error deleting event: $e');
     }
   }
 
@@ -117,25 +143,31 @@ class _PlannerPageState extends State<PlannerPage> {
         .doc(userEmail)
         .collection('events');
 
-    final querySnapshot = await eventsCollection
-        .where('eventDate', isEqualTo: _selectedDay)
-        .get();
+    try {
+      final querySnapshot = await eventsCollection
+          .where('eventDate', isEqualTo: Timestamp.fromDate(_normalizeDate(_selectedDay)))
+          .get();
 
-    if (querySnapshot.docs.isNotEmpty) {
-      final docToUpdate = querySnapshot.docs[index];
-      await eventsCollection.doc(docToUpdate.id).update({
-        'eventDescription': newEvent,
-      });
+      if (querySnapshot.docs.isNotEmpty) {
+        final docToUpdate = querySnapshot.docs[index];
+        await eventsCollection.doc(docToUpdate.id).update({
+          'eventDescription': newEvent,
+        });
 
-      setState(() {
-        _events[_selectedDay]?[index] = newEvent;
-      });
+        setState(() {
+          final normalizedDate = _normalizeDate(_selectedDay);
+          _events[normalizedDate]?[index] = newEvent;
+          print("Event edited: $_events");
+        });
+      }
+    } catch (e) {
+      print('Error editing event: $e');
     }
   }
 
   void _showEditDialog(int index) {
     TextEditingController _editController = TextEditingController();
-    _editController.text = _events[_selectedDay]?[index] ?? '';
+    _editController.text = _events[_normalizeDate(_selectedDay)]?[index] ?? '';
 
     showDialog(
       context: context,
@@ -183,7 +215,7 @@ class _PlannerPageState extends State<PlannerPage> {
         title: Text(
           'BrainSwipe',
           style: GoogleFonts.playfairDisplay(
-            color: isDarkMode ? Colors.white : Colors.white,
+            color: Colors.white,
             fontSize: 24,
           ),
         ),
@@ -198,20 +230,14 @@ class _PlannerPageState extends State<PlannerPage> {
             focusedDay: _focusedDay,
             calendarFormat: _calendarFormat,
             selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
+              return isSameDay(_normalizeDate(_selectedDay), _normalizeDate(day));
             },
             onDaySelected: (selectedDay, focusedDay) {
-              if (selectedDay.isBefore(DateTime.now().subtract(Duration(days: 1)))) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("You can't select a past date."),
-                  ),
-                );
-                return;
-              }
               setState(() {
-                _selectedDay = selectedDay;
+                _selectedDay = _normalizeDate(selectedDay);
                 _focusedDay = focusedDay;
+                print("Selected Day: $_selectedDay");
+                print("Events on selected day: ${_events[_normalizeDate(_selectedDay)] ?? []}");
               });
             },
             onFormatChanged: (format) {
@@ -222,18 +248,12 @@ class _PlannerPageState extends State<PlannerPage> {
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },
-            enabledDayPredicate: (day) {
-              return !day.isBefore(DateTime.now().subtract(Duration(days: 1)));
-            },
             eventLoader: (day) {
-              if (_events.containsKey(day)) {
-                return _events[day]!;
-              } else {
-                return [];
-              }
+              final normalizedDate = _normalizeDate(day);
+              return _events[normalizedDate] ?? [];
             },
           ),
-          ...(_events[_selectedDay] ?? []).asMap().entries.map((entry) {
+          ...(_events[_normalizeDate(_selectedDay)] ?? []).asMap().entries.map((entry) {
             int index = entry.key;
             String event = entry.value;
             return ListTile(
