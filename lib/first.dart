@@ -14,7 +14,7 @@ class FirstPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF191970), // Adjusted for dark mode
+        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF052659), // Adjusted for dark mode
         title: Text(
           'BrainSwipe',
           style: GoogleFonts.playfairDisplay(

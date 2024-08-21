@@ -66,7 +66,7 @@ class LoginPage extends StatelessWidget {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF191970),
+        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF052659),
         title: Text(
           'BrainSwipe',
           style: GoogleFonts.playfairDisplay(
