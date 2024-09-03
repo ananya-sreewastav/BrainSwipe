@@ -236,6 +236,16 @@ class _PlannerPageState extends State<PlannerPage> {
               setState(() {
                 _selectedDay = _normalizeDate(selectedDay);
                 _focusedDay = focusedDay;
+
+                if (_selectedDay.isBefore(_normalizeDate(DateTime.now()))) {
+                  // Show a SnackBar if trying to select a past date
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Cannot add events to past dates.'),
+                    ),
+                  );
+                }
+
                 print("Selected Day: $_selectedDay");
                 print("Events on selected day: ${_events[_normalizeDate(_selectedDay)] ?? []}");
               });
@@ -290,22 +300,21 @@ class _PlannerPageState extends State<PlannerPage> {
           ),
           ElevatedButton(
             onPressed: () {
-              if (_eventController.text.isEmpty) {
+              if (_eventController.text.isEmpty ||
+                  _normalizeDate(_selectedDay).isBefore(_normalizeDate(DateTime.now()))) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Please enter an event and select a valid date.'),
+                  ),
+                );
                 return;
               }
               _saveEvent(_eventController.text);
             },
-            child: Text(
-              'Add Event',
-              style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
-            ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: isDarkMode ? Colors.grey[700] : Color(0xFF191970),
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
+              backgroundColor: isDarkMode ? Colors.grey[800] : Color(0xFF052659),
             ),
+            child: Text('Add Event'),
           ),
         ],
       ),

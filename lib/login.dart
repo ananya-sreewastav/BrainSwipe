@@ -78,7 +78,7 @@ class LoginPage extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       backgroundColor: isDarkMode ? Colors.black : Colors.white,
-      body: Center(
+      body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),
           child: Form(
@@ -87,6 +87,7 @@ class LoginPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                SizedBox(height: 60), // Add some space from the top
                 Text(
                   'Hello Student,',
                   style: TextStyle(

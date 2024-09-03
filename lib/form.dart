@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'congratulations_page.dart'; // Import the CongratulationsPage
+import 'congratulations_page.dart';
 
 class CreateStudyGroupForm extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _subjectController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _membersController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +36,7 @@ class CreateStudyGroupForm extends StatelessWidget {
             children: [
               // Subject Name
               TextFormField(
+                controller: _subjectController,
                 decoration: InputDecoration(
                   labelText: 'Subject Name',
                   border: OutlineInputBorder(),
@@ -75,6 +80,7 @@ class CreateStudyGroupForm extends StatelessWidget {
 
               // Time
               TextFormField(
+                controller: _timeController,
                 decoration: InputDecoration(
                   labelText: 'Time',
                   border: OutlineInputBorder(),
@@ -90,6 +96,7 @@ class CreateStudyGroupForm extends StatelessWidget {
 
               // Location
               TextFormField(
+                controller: _locationController,
                 decoration: InputDecoration(
                   labelText: 'Location',
                   border: OutlineInputBorder(),
@@ -105,6 +112,7 @@ class CreateStudyGroupForm extends StatelessWidget {
 
               // Number of Members
               TextFormField(
+                controller: _membersController,
                 decoration: InputDecoration(
                   labelText: 'Number of Members',
                   border: OutlineInputBorder(),
@@ -125,7 +133,7 @@ class CreateStudyGroupForm extends StatelessWidget {
                   backgroundColor: isDarkMode ? Colors.blueGrey : Color(0xFF191970),
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -134,15 +142,41 @@ class CreateStudyGroupForm extends StatelessWidget {
                       ),
                     );
 
-                    // Navigate to the CongratulationsPage after a delay
-                    Future.delayed(Duration(seconds: 2), () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CongratulationsPage(),
-                        ),
-                      );
-                    });
+                    // Create the study group and add it to Firestore
+                    final user = FirebaseAuth.instance.currentUser;
+                    final studyGroupData = {
+                      'subject': _subjectController.text,
+                      'department': _subjectController.text,
+                      'time': _timeController.text,
+                      'location': _locationController.text,
+                      'members': int.parse(_membersController.text),
+                      'createdAt': FieldValue.serverTimestamp(),
+                    };
+
+                    if (user != null) {
+                      // Add to the global collection
+                      final studyGroupDocRef = await FirebaseFirestore.instance
+                          .collection('study_groups')
+                          .add(studyGroupData);
+
+                      // Add to the user's subcollection
+                      await FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(user.email)
+                          .collection('my_study_groups')
+                          .doc(studyGroupDocRef.id)
+                          .set(studyGroupData);
+
+                      // Navigate to the CongratulationsPage after a delay
+                      Future.delayed(Duration(seconds: 2), () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CongratulationsPage(),
+                          ),
+                        );
+                      });
+                    }
                   }
                 },
                 child: Text(
