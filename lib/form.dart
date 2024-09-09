@@ -4,12 +4,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'congratulations_page.dart';
 
-class CreateStudyGroupForm extends StatelessWidget {
+class CreateStudyGroupForm extends StatefulWidget {
+  @override
+  _CreateStudyGroupFormState createState() => _CreateStudyGroupFormState();
+}
+
+class _CreateStudyGroupFormState extends State<CreateStudyGroupForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _subjectController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _membersController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +84,38 @@ class CreateStudyGroupForm extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
 
+              // Date
+              TextFormField(
+                controller: _dateController,
+                decoration: InputDecoration(
+                  labelText: 'Date',
+                  border: OutlineInputBorder(),
+                ),
+                readOnly: true, // Prevents manual input
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(), // Prevents selecting past dates
+                    lastDate: DateTime(2101),
+                  );
+
+                  if (pickedDate != null) {
+                    setState(() {
+                      _dateController.text =
+                      "${pickedDate.toLocal()}".split(' ')[0];
+                    });
+                  }
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select a date';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16.0),
+
               // Time
               TextFormField(
                 controller: _timeController,
@@ -130,7 +168,8 @@ class CreateStudyGroupForm extends StatelessWidget {
               // Submit Button
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: isDarkMode ? Colors.blueGrey : Color(0xFF191970),
+                  backgroundColor:
+                  isDarkMode ? Colors.blueGrey : Color(0xFF191970),
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                 ),
                 onPressed: () async {
@@ -147,6 +186,7 @@ class CreateStudyGroupForm extends StatelessWidget {
                     final studyGroupData = {
                       'subject': _subjectController.text,
                       'department': _subjectController.text,
+                      'date': _dateController.text,
                       'time': _timeController.text,
                       'location': _locationController.text,
                       'members': int.parse(_membersController.text),
