@@ -20,7 +20,8 @@ dependencies:
   firebase_auth: ^5.1.4
   cloud_firestore: ^5.2.1
   firebase_storage: ^12.2.0
-   # Correct placement and indentation
+  swipe_cards: ^2.0.0
+  # Correct placement and indentation
 
 dev_dependencies:
   flutter_test:

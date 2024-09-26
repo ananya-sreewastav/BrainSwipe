@@ -39,7 +39,6 @@ class CartPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final item = cartItems[index];
           return ListTile(
-            leading: Image.asset(item['image']!),
             title: Text(
               item['name']!,
               style: GoogleFonts.playfairDisplay(
