@@ -13,46 +13,69 @@ class TutorPage extends StatelessWidget {
         title: Text(
           'BrainSwipe',
           style: GoogleFonts.playfairDisplay(
-            color: isDarkMode ? Colors.white : Colors.white,
+            color: Colors.white,
             fontSize: 24,
           ),
         ),
         centerTitle: true,
       ),
       backgroundColor: isDarkMode ? Colors.black : Colors.white,
-      body: Column(
-        children: [
-          SizedBox(height: AppBar().preferredSize.height + 20), // Space below the AppBar
-          Center(
-            child: Text(
-              'Choose Your Role',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: isDarkMode ? Colors.white : Colors.black,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            SizedBox(height: AppBar().preferredSize.height + 20),
+            Center(
+              child: Text(
+                'Choose Your Role',
+                style: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
+                  color: isDarkMode ? Colors.white : Colors.black,
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 20), // Space between the text and the squares
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Tut()), // Replace with your TuteePage
-                          );
-                        },
-                        child: Container(
-                          height: MediaQuery.of(context).size.height / 3,
-                          color: isDarkMode ? Colors.grey[800] : Colors.cyan.withOpacity(0.5),
-                          child: Center(
-                            child: Text(
+            SizedBox(height: 40),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  // Tutor Card
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Tut()), // Replace with your TuteePage
+                        );
+                      },
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: LinearGradient(
+                            colors: isDarkMode
+                                ? [Colors.grey[800]!, Colors.grey[700]!]
+                                : [Colors.cyan.withOpacity(0.8), Colors.blueAccent.withOpacity(0.8)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black38,
+                              offset: Offset(0, 6),
+                              blurRadius: 10,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.school, size: 36, color: Colors.white),
+                            SizedBox(width: 10),
+                            Text(
                               'Tutor',
                               style: TextStyle(
                                 fontSize: 36,
@@ -60,28 +83,44 @@ class TutorPage extends StatelessWidget {
                                 color: Colors.white,
                               ),
                             ),
-                          ),
-                          alignment: Alignment.centerLeft,
+                          ],
                         ),
                       ),
                     ),
-                    SizedBox(width: MediaQuery.of(context).size.width / 2), // Space for the next square
-                  ],
-                ),
-                SizedBox(height: 20), // Space between the two rows
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width / 2), // Space for the previous square
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          // Replace this with the navigation to your desired page
-                        },
-                        child: Container(
-                          height: MediaQuery.of(context).size.height / 3,
-                          color: isDarkMode ? Colors.grey[800] : Colors.cyan.withOpacity(0.5),
-                          child: Center(
-                            child: Text(
+                  ),
+                  SizedBox(height: 30),
+                  // Tutee Card
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        // Replace this with the navigation to your desired page
+                      },
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: LinearGradient(
+                            colors: isDarkMode
+                                ? [Colors.grey[800]!, Colors.grey[700]!]
+                                : [Colors.pinkAccent.withOpacity(0.8), Colors.deepPurpleAccent.withOpacity(0.8)],
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black38,
+                              offset: Offset(0, 6),
+                              blurRadius: 10,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.person, size: 36, color: Colors.white),
+                            SizedBox(width: 10),
+                            Text(
                               'Tutee',
                               style: TextStyle(
                                 fontSize: 36,
@@ -89,17 +128,16 @@ class TutorPage extends StatelessWidget {
                                 color: Colors.white,
                               ),
                             ),
-                          ),
-                          alignment: Alignment.centerRight,
+                          ],
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
