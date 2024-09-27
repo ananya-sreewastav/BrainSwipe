@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:file_picker/file_picker.dart'; // Ensure this import is correct
+import 'package:cloud_firestore/cloud_firestore.dart'; // Firebase Firestore
 
 class Tut extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   String? _certificatePath;
 
+  // Firestore instance
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  // Variables to hold form data
+  String? _firstSubject;
+  String? _firstMarks;
+  String? _firstProficiency;
+  String? _secondSubject;
+  String? _secondMarks;
+  String? _secondProficiency;
+
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
-    // Get the screen width and height
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-
-    // Calculate padding and font size based on screen size
     final padding = screenWidth * 0.04;
     final fontSize = screenWidth * 0.045;
 
@@ -62,6 +70,9 @@ class Tut extends StatelessWidget {
                           border: OutlineInputBorder(),
                           hintText: 'e.g., Math',
                         ),
+                        onChanged: (value) {
+                          _firstSubject = value;
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter the first subject preference';
@@ -83,6 +94,9 @@ class Tut extends StatelessWidget {
                           hintText: 'e.g., 85%',
                         ),
                         keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          _firstMarks = value;
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter the aggregate semester marks for the first subject';
@@ -108,7 +122,9 @@ class Tut extends StatelessWidget {
                           child: Text(level),
                         ))
                             .toList(),
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          _firstProficiency = value;
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please select the proficiency level for the first subject';
@@ -121,6 +137,7 @@ class Tut extends StatelessWidget {
                 ),
               ),
 
+              // (Repeat similar code for Second Subject Preference)
               // Card for Second Subject Preference
               Card(
                 elevation: 3,
@@ -145,6 +162,9 @@ class Tut extends StatelessWidget {
                           border: OutlineInputBorder(),
                           hintText: 'e.g., Science',
                         ),
+                        onChanged: (value) {
+                          _secondSubject = value;
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter the second subject preference';
@@ -166,6 +186,9 @@ class Tut extends StatelessWidget {
                           hintText: 'e.g., 90%',
                         ),
                         keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          _secondMarks = value;
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter the aggregate semester marks for the second subject';
@@ -191,7 +214,9 @@ class Tut extends StatelessWidget {
                           child: Text(level),
                         ))
                             .toList(),
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          _secondProficiency = value;
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please select the proficiency level for the second subject';
@@ -204,71 +229,30 @@ class Tut extends StatelessWidget {
                 ),
               ),
 
-              // Card for Certifications
-              Card(
-                elevation: 3,
-                margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
-                color: isDarkMode ? Colors.grey[800] : Colors.white,
-                child: Padding(
-                  padding: EdgeInsets.all(padding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Certifications in Subject Domain (Optional)',
-                        style: TextStyle(
-                          fontSize: fontSize,
-                          fontWeight: FontWeight.bold,
-                          color: isDarkMode ? Colors.white : Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: screenHeight * 0.01),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'e.g., Certified Math Tutor',
-                        ),
-                      ),
-                      SizedBox(height: screenHeight * 0.02),
-                      ElevatedButton.icon(
-                        onPressed: () async {
-                          FilePickerResult? result =
-                          await FilePicker.platform.pickFiles();
-
-                          if (result != null) {
-                            _certificatePath = result.files.single.path;
-                            // Perform actions with the selected file path
-                          }
-                        },
-                        icon: const Icon(Icons.upload_file),
-                        label: const Text('Upload Certificate'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: isDarkMode ? Colors.grey[700] : const Color(0xFFB3E5FC),
-                        ),
-                      ),
-                      if (_certificatePath != null)
-                        Padding(
-                          padding: EdgeInsets.only(top: screenHeight * 0.01),
-                          child: Text(
-                            'Uploaded: ${_certificatePath!.split('/').last}',
-                            style: TextStyle(
-                              fontSize: fontSize * 0.9,
-                              color: isDarkMode ? Colors.white : Colors.black,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-
               // Submit Button
               SizedBox(height: screenHeight * 0.02),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // Handle form submission
+                      // Send data to Firestore
+                      _firestore.collection('subject_preferences').add({
+                        'first_subject': _firstSubject,
+                        'first_marks': _firstMarks,
+                        'first_proficiency': _firstProficiency,
+                        'second_subject': _secondSubject,
+                        'second_marks': _secondMarks,
+                        'second_proficiency': _secondProficiency,
+                        'certificate_path': _certificatePath,
+                      }).then((value) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Data submitted successfully!')),
+                        );
+                      }).catchError((error) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Failed to submit data: $error')),
+                        );
+                      });
                     }
                   },
                   child: const Text('Submit'),
