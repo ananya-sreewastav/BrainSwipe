@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'tut.dart'; // Make sure to replace this with the correct import for your TuteePage
+import 'tut.dart'; // Ensure this import is correct for the tutor page
+import 'tutee_page.dart'; // Import your TuteePage here
 import 'package:google_fonts/google_fonts.dart';
 
 class TutorPage extends StatelessWidget {
@@ -47,7 +48,7 @@ class TutorPage extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Tut()), // Replace with your TuteePage
+                          MaterialPageRoute(builder: (context) => Tut()), // Navigates to Tutor page
                         );
                       },
                       child: AnimatedContainer(
@@ -93,7 +94,10 @@ class TutorPage extends StatelessWidget {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        // Replace this with the navigation to your desired page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => TuteePage()), // Navigates to Tutee page
+                        );
                       },
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 300),
