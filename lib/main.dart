@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'login.dart';
 import 'sign.dart';
@@ -11,6 +10,7 @@ import 'swipe_page.dart';
 import 'timetable_page.dart';
 import 'tutor_page.dart';
 import 'tut.dart';
+import 'splash_screen.dart'; // Import the SplashScreen
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter bindings are initialized
@@ -50,9 +50,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'BrainSwipe App',
       theme: _isDarkMode ? _darkTheme : _lightTheme,
-      initialRoute: '/',
+      home: SplashScreen(toggleDarkMode: _toggleDarkMode), // Set SplashScreen as home
       routes: {
-        '/': (context) => LoginPage(toggleDarkMode: _toggleDarkMode),
         '/sign': (context) => SignPage(),
         '/first': (context) => FirstPage(),
         '/user': (context) => UserPage(),
