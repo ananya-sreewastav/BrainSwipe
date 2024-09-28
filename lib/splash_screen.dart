@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'login.dart'; // Ensure you import your LoginPage
 
 class SplashScreen extends StatefulWidget {
-  final Function toggleDarkMode; // Add this line to accept the toggleDarkMode function
+  final Function toggleDarkMode;
 
   const SplashScreen({Key? key, required this.toggleDarkMode}) : super(key: key);
 
@@ -31,18 +31,36 @@ class _SplashScreenState extends State<SplashScreen> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFF066375), // Your specified teal color
-              Color(0xFF3AB3A0), // A lighter complementary shade for the gradient
+              Color(0xFF064A58), // Dark teal
+              Color(0xFF066375), // Slightly lighter teal
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
         ),
         child: Center(
-          child: Image.asset(
-            'assets/logo.png', // Path to your logo
-            width: 400, // Width of the logo
-            height: 500, // Height of the logo
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "BRAINSWIPE",
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  letterSpacing: 2.0,
+                ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                "PERSONALIZATION AT IT'S PEAK",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white.withOpacity(0.7),
+                  letterSpacing: 1.5,
+                ),
+              ),
+            ],
           ),
         ),
       ),
