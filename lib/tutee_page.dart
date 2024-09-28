@@ -33,7 +33,7 @@ class _TuteePageState extends State<TuteePage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF052659),
+        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF064A58),
         title: Text(
           'BrainSwipe',
           style: GoogleFonts.playfairDisplay(

@@ -47,7 +47,7 @@ class _SwipePageState extends State<SwipePage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF052659),
+        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF064A58),
         title: Text(
           'BrainSwipe',
           style: GoogleFonts.playfairDisplay(
