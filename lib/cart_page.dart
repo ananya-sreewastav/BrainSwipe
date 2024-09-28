@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CartPage extends StatelessWidget {
-  final List<Map<String, String>> cartItems;
+  final List<Map<String, dynamic>> interestedGroups;
 
-  CartPage({required this.cartItems});
+  CartPage({required this.interestedGroups});
 
   @override
   Widget build(BuildContext context) {
@@ -12,9 +12,9 @@ class CartPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF052659),
+        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF064A58),
         title: Text(
-          'Cart',
+          'BrainSwipe',
           style: GoogleFonts.playfairDisplay(
             color: Colors.white,
             fontSize: 24,
@@ -22,37 +22,39 @@ class CartPage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      backgroundColor: isDarkMode ? Colors.black : Colors.white,
-      body: cartItems.isEmpty
+      body: interestedGroups.isEmpty
           ? Center(
         child: Text(
-          'Cart is empty',
-          style: GoogleFonts.roboto(
+          'No study groups added to the cart.',
+          style: GoogleFonts.lato(
             color: isDarkMode ? Colors.white : Colors.black,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
         ),
       )
           : ListView.builder(
-        itemCount: cartItems.length,
+        itemCount: interestedGroups.length,
         itemBuilder: (context, index) {
-          final item = cartItems[index];
+          final group = interestedGroups[index];
           return ListTile(
             title: Text(
-              item['name']!,
-              style: GoogleFonts.playfairDisplay(
+              group['subject'] ?? 'No subject',
+              style: GoogleFonts.lato(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
                 color: isDarkMode ? Colors.white : Colors.black,
-                fontSize: 18,
               ),
             ),
-            subtitle: Text(
-              'Venue: ${item['venue']} \nDate: ${item['date']}',
-              style: GoogleFonts.roboto(
-                color: isDarkMode ? Colors.white70 : Colors.black54,
-                fontSize: 16,
-              ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Department: ${group['department'] ?? 'No department'}'),
+                Text('Date: ${group['date'] ?? 'No date'}'),
+                Text('Time: ${group['time'] ?? 'No time'}'),
+                Text('Location: ${group['location'] ?? 'No location'}'),
+              ],
             ),
+            isThreeLine: true,
           );
         },
       ),

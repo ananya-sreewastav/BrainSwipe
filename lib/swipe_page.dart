@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:swipe_cards/swipe_cards.dart';
+import 'cart_page.dart'; // Import the cart page
 
 class SwipePage extends StatefulWidget {
   @override
@@ -11,6 +12,7 @@ class SwipePage extends StatefulWidget {
 class _SwipePageState extends State<SwipePage> {
   late MatchEngine _matchEngine;
   List<SwipeItem> _swipeItems = [];
+  List<Map<String, dynamic>> _interestedGroups = []; // List to store swiped right groups
 
   @override
   void initState() {
@@ -25,7 +27,10 @@ class _SwipePageState extends State<SwipePage> {
           final data = doc.data() as Map<String, dynamic>;
           return SwipeItem(
             content: StudyGroupCard(data),
-            likeAction: () => _showSnackBar("Interested"),
+            likeAction: () {
+              _showSnackBar("Interested");
+              _interestedGroups.add(data); // Add to interested list when swiped right
+            },
             nopeAction: () => _showSnackBar("Not Interested"),
           );
         }).toList();
@@ -56,6 +61,20 @@ class _SwipePageState extends State<SwipePage> {
           ),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.shopping_cart, color: Colors.white),
+            onPressed: () {
+              // Navigate to CartPage when cart icon is clicked
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CartPage(interestedGroups: _interestedGroups),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
       body: _swipeItems.isEmpty
@@ -87,15 +106,14 @@ class _SwipePageState extends State<SwipePage> {
               SizedBox(height: 20),
             ],
           ),
-          // Instruction text overlay
           Positioned(
-            top: 10, // Position at the top
+            top: 10,
             left: 10,
             right: 10,
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.7), // Semi-transparent background
+                color: Colors.black.withOpacity(0.7),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
@@ -124,19 +142,18 @@ class StudyGroupCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Center(
-      // Wrap card inside a Container that takes 70% of height and 80% of width
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.80,  // 80% of the screen width
-        height: MediaQuery.of(context).size.height * 0.70, // 70% of the screen height
+        width: MediaQuery.of(context).size.width * 0.80,
+        height: MediaQuery.of(context).size.height * 0.70,
         child: Card(
-          margin: EdgeInsets.symmetric(vertical: 20, horizontal: 0), // Centered with no extra padding
-          elevation: 10, // Elevation for prominent card shadow
+          margin: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+          elevation: 10,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25), // More pronounced rounded corners
+            borderRadius: BorderRadius.circular(25),
           ),
           color: isDarkMode ? Colors.grey[800] : Colors.white,
           child: Padding(
-            padding: const EdgeInsets.all(30), // Increased padding for more spacing inside the card
+            padding: const EdgeInsets.all(30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -144,12 +161,12 @@ class StudyGroupCard extends StatelessWidget {
                 Text(
                   data['subject'] ?? 'No subject',
                   style: GoogleFonts.lato(
-                    fontSize: 24, // Larger text for the subject
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: isDarkMode ? Colors.white : Colors.black,
                   ),
                 ),
-                SizedBox(height: 20), // Increased spacing between subject and details
+                SizedBox(height: 20),
                 Text('Department: ${data['department'] ?? 'No department'}'),
                 Text('Date: ${data['date'] ?? 'No date'}'),
                 Text('Time: ${data['time'] ?? 'No time'}'),
