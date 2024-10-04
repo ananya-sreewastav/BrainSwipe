@@ -101,20 +101,22 @@ class _TimetablePageState extends State<TimetablePage> {
       while (subject.hoursPerSubject > 0) {
         String currentDay = days[currentDayIndex];
 
+        // Determine how many hours can be added to the current day
+        int hoursToAdd = subject.hoursPerSubject > 2 ? 2 : subject.hoursPerSubject;
+
         // Check if adding this subject exceeds the max hours for the day
-        if (currentDayHours + subject.hoursPerSubject <= maxHoursPerDay) {
+        if (currentDayHours + hoursToAdd <= maxHoursPerDay) {
           // Add subject to the day
-          timetable[currentDay]!
-              .add('${subject.name} (${subject.hoursPerSubject} hrs)');
-          currentDayHours += subject.hoursPerSubject;
-          subject.hoursPerSubject = 0; // All hours allocated
+          timetable[currentDay]!.add('${subject.name} ($hoursToAdd hrs)');
+          currentDayHours += hoursToAdd;
+          subject.hoursPerSubject -= hoursToAdd; // Decrease the subject hours
         } else {
           // Determine how many hours can be added to the current day
           int remainingHours = maxHoursPerDay - currentDayHours;
 
           if (remainingHours > 0) {
-            timetable[currentDay]!
-                .add('${subject.name} (${remainingHours} hrs)');
+            // Add remaining hours for the subject for the current day
+            timetable[currentDay]!.add('${subject.name} ($remainingHours hrs)');
             subject.hoursPerSubject -= remainingHours;
             currentDayHours = maxHoursPerDay; // Set the day to max
           }
@@ -149,180 +151,181 @@ class _TimetablePageState extends State<TimetablePage> {
         centerTitle: true,
       ),
       backgroundColor: isDarkMode ? Colors.black : Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Set Maximum Hours Per Day',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: isDarkMode ? Colors.white : Colors.black,
-              ),
-            ),
-            SizedBox(height: 8),
-            TextField(
-              controller: _maxHoursController,
-              decoration: InputDecoration(
-                labelText: 'Max Hours Per Day',
-                labelStyle: TextStyle(
-                  color: isDarkMode ? Colors.white70 : Colors.black54,
+      body: SingleChildScrollView( // <-- Added this to make the UI scrollable
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Set Maximum Hours Per Day',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: isDarkMode ? Colors.white : Colors.black,
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(
-                    color: isDarkMode ? Colors.white54 : Colors.black54,
+              ),
+              SizedBox(height: 8),
+              TextField(
+                controller: _maxHoursController,
+                decoration: InputDecoration(
+                  labelText: 'Max Hours Per Day',
+                  labelStyle: TextStyle(
+                    color: isDarkMode ? Colors.white70 : Colors.black54,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: isDarkMode ? Colors.white54 : Colors.black54,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: isDarkMode ? Colors.white : Colors.black,
+                    ),
                   ),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(
+                keyboardType: TextInputType.number,
+                style: TextStyle(
+                  color: isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _setMaxHoursPerDay,
+                child: Text(
+                  'Set Max Hours',
+                  style: TextStyle(color: Colors.white), // Bright text color
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                  isDarkMode ? Colors.grey[800] : Color(0xFF191970),
+                  padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                ),
+              ),
+              SizedBox(height: 24),
+              Text(
+                'Add Subjects',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+              SizedBox(height: 8),
+              TextField(
+                controller: _subjectController,
+                decoration: InputDecoration(
+                  labelText: 'Subject Name',
+                  labelStyle: TextStyle(
+                    color: isDarkMode ? Colors.white70 : Colors.black54,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: isDarkMode ? Colors.white54 : Colors.black54,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: isDarkMode ? Colors.white : Colors.black,
+                    ),
+                  ),
+                ),
+                style: TextStyle(
+                  color: isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+              SizedBox(height: 8),
+              TextField(
+                controller: _hoursController,
+                decoration: InputDecoration(
+                  labelText: 'Hours Per Subject',
+                  labelStyle: TextStyle(
+                    color: isDarkMode ? Colors.white70 : Colors.black54,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: isDarkMode ? Colors.white54 : Colors.black54,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: isDarkMode ? Colors.white : Colors.black,
+                    ),
+                  ),
+                ),
+                keyboardType: TextInputType.number,
+                style: TextStyle(
+                  color: isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _addSubject,
+                child: Text(
+                  'Add Subject',
+                  style: TextStyle(color: Colors.white), // Bright text color
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                  isDarkMode ? Colors.grey[800] : Color(0xFF191970),
+                  padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                ),
+              ),
+              SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: _generateTimetable,
+                child: Text(
+                  'Generate Timetable',
+                  style: TextStyle(color: Colors.white), // Bright text color
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                  isDarkMode ? Colors.grey[800] : Color(0xFF191970),
+                  padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                ),
+              ),
+              SizedBox(height: 24),
+              if (_timetable.isNotEmpty) ...[
+                Text(
+                  'Timetable',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
                     color: isDarkMode ? Colors.white : Colors.black,
                   ),
                 ),
-              ),
-              keyboardType: TextInputType.number,
-              style: TextStyle(
-                color: isDarkMode ? Colors.white : Colors.black,
-              ),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _setMaxHoursPerDay,
-              child: Text(
-                'Set Max Hours',
-                style: TextStyle(color: Colors.white), // Bright text color
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                isDarkMode ? Colors.grey[800] : Color(0xFF191970),
-                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-              ),
-            ),
-            SizedBox(height: 24),
-            Text(
-              'Add Subjects',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: isDarkMode ? Colors.white : Colors.black,
-              ),
-            ),
-            SizedBox(height: 8),
-            TextField(
-              controller: _subjectController,
-              decoration: InputDecoration(
-                labelText: 'Subject Name',
-                labelStyle: TextStyle(
-                  color: isDarkMode ? Colors.white70 : Colors.black54,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(
-                    color: isDarkMode ? Colors.white54 : Colors.black54,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(
-                    color: isDarkMode ? Colors.white : Colors.black,
-                  ),
-                ),
-              ),
-              style: TextStyle(
-                color: isDarkMode ? Colors.white : Colors.black,
-              ),
-            ),
-            SizedBox(height: 8),
-            TextField(
-              controller: _hoursController,
-              decoration: InputDecoration(
-                labelText: 'Hours Per Subject',
-                labelStyle: TextStyle(
-                  color: isDarkMode ? Colors.white70 : Colors.black54,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(
-                    color: isDarkMode ? Colors.white54 : Colors.black54,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(
-                    color: isDarkMode ? Colors.white : Colors.black,
-                  ),
-                ),
-              ),
-              keyboardType: TextInputType.number,
-              style: TextStyle(
-                color: isDarkMode ? Colors.white : Colors.black,
-              ),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _addSubject,
-              child: Text(
-                'Add Subject',
-                style: TextStyle(color: Colors.white), // Bright text color
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                isDarkMode ? Colors.grey[800] : Color(0xFF191970),
-                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-              ),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _generateTimetable,
-              child: Text(
-                'Generate Timetable',
-                style: TextStyle(color: Colors.white), // Bright text color
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                isDarkMode ? Colors.grey[800] : Color(0xFF191970),
-                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-              ),
-            ),
-            SizedBox(height: 24),
-            if (_timetable.isNotEmpty)
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _timetable.length,
-                  itemBuilder: (context, index) {
-                    String day = _timetable.keys.elementAt(index);
-                    List<String> subjects = _timetable[day]!;
-
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          day,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: isDarkMode ? Colors.white : Colors.black,
-                          ),
+                SizedBox(height: 16),
+                for (var entry in _timetable.entries)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        entry.key,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: isDarkMode ? Colors.white : Colors.black,
                         ),
-                        ...subjects.map((subject) => Text(
-                          subject,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: isDarkMode
-                                ? Colors.white70
-                                : Colors.black87,
-                          ),
-                        )),
-                        SizedBox(height: 8),
-                      ],
-                    );
-                  },
-                ),
-              ),
-          ],
+                      ),
+                      ...entry.value.map((subject) => Text(
+                        subject,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: isDarkMode ? Colors.white70 : Colors.black87,
+                        ),
+                      )),
+                      SizedBox(height: 16),
+                    ],
+                  ),
+              ],
+            ],
+          ),
         ),
       ),
     );
