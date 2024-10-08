@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     // Start a timer for 4 seconds
-    Timer(Duration(seconds: 4), () {
+    Timer(Duration(seconds: 3), () {
       // Navigate to the login page after 4 seconds, passing the toggleDarkMode function
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => LoginPage(toggleDarkMode: widget.toggleDarkMode)),

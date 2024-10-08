@@ -62,7 +62,7 @@ class UserPage extends StatelessWidget {
                 },
                 child: Text('Logout'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: isDarkMode ? Colors.grey[800] : Color(0xFF191970),
+                  backgroundColor: isDarkMode ? Colors.grey[800] : Colors.white,
                 ),
               ),
             ),
