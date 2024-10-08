@@ -288,7 +288,7 @@ class PaymentSuccessPage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              'Your payment was successful!',
+              'Your payment was successful!!',
               style: GoogleFonts.lato(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 30),
