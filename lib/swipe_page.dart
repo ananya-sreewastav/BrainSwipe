@@ -76,66 +76,59 @@ class _SwipePageState extends State<SwipePage> {
           ),
         ],
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF064A58), Color(0xFF028090)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: _swipeItems.isEmpty
-            ? Center(child: CircularProgressIndicator())
-            : Stack(
-          children: [
-            Column(
-              children: [
-                SizedBox(height: 30),
-                Center(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    height: MediaQuery.of(context).size.height * 0.70,
-                    child: SwipeCards(
-                      matchEngine: _matchEngine,
-                      onStackFinished: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('No more study groups')),
-                        );
-                      },
-                      itemBuilder: (context, index) {
-                        return _swipeItems[index].content;
-                      },
-                      upSwipeAllowed: false,
-                      fillSpace: true,
-                    ),
+      // Update the background to be white
+      backgroundColor: Colors.white,
+      body: _swipeItems.isEmpty
+          ? Center(child: CircularProgressIndicator())
+          : Stack(
+        children: [
+          Column(
+            children: [
+              SizedBox(height: 30),
+              Center(
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.95,
+                  height: MediaQuery.of(context).size.height * 0.70,
+                  child: SwipeCards(
+                    matchEngine: _matchEngine,
+                    onStackFinished: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('No more study groups')),
+                      );
+                    },
+                    itemBuilder: (context, index) {
+                      return _swipeItems[index].content;
+                    },
+                    upSwipeAllowed: false,
+                    fillSpace: true,
                   ),
-                ),
-                SizedBox(height: 20),
-              ],
-            ),
-            Positioned(
-              top: 10,
-              left: 10,
-              right: 10,
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.7),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  'Swipe left if you are not interested, swipe right if you are interested',
-                  style: GoogleFonts.lato(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  textAlign: TextAlign.center,
                 ),
               ),
+              SizedBox(height: 20),
+            ],
+          ),
+          Positioned(
+            top: 10,
+            left: 10,
+            right: 10,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                'Swipe left if you are not interested, swipe right if you are interested',
+                style: GoogleFonts.lato(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

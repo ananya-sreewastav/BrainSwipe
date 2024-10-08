@@ -42,7 +42,7 @@ class FirstPage extends StatelessWidget {
           gradient: LinearGradient(
             colors: isDarkMode
                 ? [Colors.black, Colors.grey[850]!]
-                : [Color(0xFFF0FFFF), Color(0xFF003366)], // Adjusted for dark mode
+                : [Colors.white, Color(0xFF064A58)], // Gradient starting from white to AppBar color
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
