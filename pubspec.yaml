@@ -21,6 +21,7 @@ dependencies:
   cloud_firestore: ^5.2.1
   firebase_storage: ^12.2.0
   swipe_cards: ^2.0.0
+  razorpay_flutter: ^1.2.8
 
 dev_dependencies:
   flutter_test:
