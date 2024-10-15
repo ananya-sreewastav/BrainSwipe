@@ -23,6 +23,126 @@ class _CartPageState extends State<CartPage> {
       appBar: AppBar(
         backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF064A58),
         title: Text(
+          'Cart',
+          style: GoogleFonts.lato(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Study Groups in Cart Section
+            Text(
+              'Study Groups in Cart',
+              style: GoogleFonts.lato(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10),
+            _buildCartItems(),
+            SizedBox(height: 20),
+
+            // Total Price Section
+            Text(
+              'Total: ₹10.00 x ${widget.interestedGroups.length} = ₹${10 * widget.interestedGroups.length}',
+              style: GoogleFonts.lato(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 30),
+
+            // Checkout Button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF064A58),
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                ),
+                onPressed: () {
+                  if (widget.interestedGroups.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Your cart is empty! Please add study groups to cart.'),
+                    ));
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PaymentMethodPage(interestedGroups: widget.interestedGroups),
+                      ),
+                    );
+                  }
+                },
+                child: Text(
+                  'Checkout',
+                  style: GoogleFonts.lato(fontSize: 18, color: Colors.white),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Cart Items Builder
+  Widget _buildCartItems() {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: widget.interestedGroups.length,
+      itemBuilder: (context, index) {
+        final group = widget.interestedGroups[index];
+        return Card(
+          elevation: 2,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  group['subject'] ?? 'No subject',
+                  style: GoogleFonts.lato(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  '₹10.00',
+                  style: GoogleFonts.lato(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[700],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class PaymentMethodPage extends StatefulWidget {
+  final List<Map<String, dynamic>> interestedGroups;
+
+  PaymentMethodPage({required this.interestedGroups});
+
+  @override
+  _PaymentMethodPageState createState() => _PaymentMethodPageState();
+}
+
+class _PaymentMethodPageState extends State<PaymentMethodPage> {
+  String selectedPaymentMethod = '';
+
+  @override
+  Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: isDarkMode ? Colors.grey[900] : Color(0xFF064A58),
+        title: Text(
           'Select a Payment Method',
           style: GoogleFonts.lato(fontSize: 18, fontWeight: FontWeight.bold),
         ),
@@ -230,7 +350,7 @@ class _CartPageState extends State<CartPage> {
     }
 
     for (var group in widget.interestedGroups) {
-      final studyGroupID = group['studyGroupID'];
+      final studyGroupID = group['studyGroupID'] ?? 'unknown';
 
       // Add to subcollection under the user
       FirebaseFirestore.instance
