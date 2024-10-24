@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UserPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final userID = FirebaseAuth.instance.currentUser?.email ?? '';
 
     return Scaffold(
       appBar: AppBar(
@@ -42,7 +45,36 @@ class UserPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            _buildStudyGroupBoxes(3, isDarkMode), // Adjust the number as needed
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(userID)
+                    .collection('registered_study_groups')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return Text(
+                      'No past study groups available.',
+                      style: TextStyle(
+                        color: isDarkMode ? Colors.white : Colors.black,
+                      ),
+                    );
+                  }
+
+                  return ListView(
+                    children: snapshot.data!.docs.map((doc) {
+                      final data = doc.data() as Map<String, dynamic>;
+                      return _buildStudyGroupBox(data, isDarkMode);
+                    }).toList(),
+                  );
+                },
+              ),
+            ),
             SizedBox(height: 20),
             Text(
               'Upcoming Study Groups:',
@@ -53,16 +85,47 @@ class UserPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            _buildStudyGroupBoxes(3, isDarkMode), // Adjust the number as needed
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('study_groups')
+                    .where('members', arrayContains: userID)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return Text(
+                      'No upcoming study groups available.',
+                      style: TextStyle(
+                        color: isDarkMode ? Colors.white : Colors.black,
+                      ),
+                    );
+                  }
+
+                  return ListView(
+                    children: snapshot.data!.docs.map((doc) {
+                      final data = doc.data() as Map<String, dynamic>;
+                      return _buildStudyGroupBox(data, isDarkMode);
+                    }).toList(),
+                  );
+                },
+              ),
+            ),
             Spacer(),
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/'); // Navigate to login page
+                  FirebaseAuth.instance.signOut().then((_) {
+                    Navigator.pushReplacementNamed(context, '/');
+                  });
                 },
                 child: Text('Logout'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isDarkMode ? Colors.grey[800] : Colors.white,
+                  foregroundColor: isDarkMode ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -72,34 +135,30 @@ class UserPage extends StatelessWidget {
     );
   }
 
-  Widget _buildStudyGroupBoxes(int count, bool isDarkMode) {
-    return Column(
-      children: List.generate(count, (index) {
-        return Container(
-          margin: EdgeInsets.symmetric(vertical: 5),
-          height: 50,
-          decoration: BoxDecoration(
-            color: isDarkMode ? Colors.grey[800] : Colors.blue[100],
-            borderRadius: BorderRadius.circular(8),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 4,
-                offset: Offset(2, 2),
-              ),
-            ],
+  Widget _buildStudyGroupBox(Map<String, dynamic> data, bool isDarkMode) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 5),
+      height: 50,
+      decoration: BoxDecoration(
+        color: isDarkMode ? Colors.grey[800] : Colors.blue[100],
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 4,
+            offset: Offset(2, 2),
           ),
-          child: Center(
-            child: Text(
-              'Study Group ${index + 1}',
-              style: TextStyle(
-                color: isDarkMode ? Colors.white : Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+        ],
+      ),
+      child: Center(
+        child: Text(
+          data['subject'] ?? 'No subject',
+          style: TextStyle(
+            color: isDarkMode ? Colors.white : Colors.black,
+            fontWeight: FontWeight.bold,
           ),
-        );
-      }),
+        ),
+      ),
     );
   }
 }

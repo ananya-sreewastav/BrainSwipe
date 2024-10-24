@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Subject {
   String name;
-  int hoursPerSubject; // Number of hours allocated to the subject
+  int hoursPerSubject;
 
   Subject(this.name, this.hoursPerSubject);
 }
@@ -54,6 +56,29 @@ class _TimetablePageState extends State<TimetablePage> {
       setState(() {
         _timetable = generateTimetable(_subjects, _maxHoursPerDay!);
       });
+      _saveTimetableToFirebase();
+    }
+  }
+
+  // Save the generated timetable to Firebase
+  void _saveTimetableToFirebase() async {
+    final String? userEmail = FirebaseAuth.instance.currentUser?.email;
+
+    if (userEmail == null || userEmail.isEmpty) {
+      print("User is not authenticated.");
+      return;
+    }
+
+    try {
+      // Add timetable to the 'timetables' subcollection of the specific user document based on their email
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userEmail)
+          .collection('timetables')
+          .add({'timetable': _timetable});
+      print("Timetable saved successfully.");
+    } catch (error) {
+      print("Failed to save timetable: $error");
     }
   }
 
@@ -151,7 +176,7 @@ class _TimetablePageState extends State<TimetablePage> {
         centerTitle: true,
       ),
       backgroundColor: isDarkMode ? Colors.black : Colors.white,
-      body: SingleChildScrollView( // <-- Added this to make the UI scrollable
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
           child: Column(
@@ -196,7 +221,7 @@ class _TimetablePageState extends State<TimetablePage> {
                 onPressed: _setMaxHoursPerDay,
                 child: Text(
                   'Set Max Hours',
-                  style: TextStyle(color: Colors.white), // Bright text color
+                  style: TextStyle(color: Colors.white),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
@@ -269,7 +294,7 @@ class _TimetablePageState extends State<TimetablePage> {
                 onPressed: _addSubject,
                 child: Text(
                   'Add Subject',
-                  style: TextStyle(color: Colors.white), // Bright text color
+                  style: TextStyle(color: Colors.white),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
@@ -282,7 +307,7 @@ class _TimetablePageState extends State<TimetablePage> {
                 onPressed: _generateTimetable,
                 child: Text(
                   'Generate Timetable',
-                  style: TextStyle(color: Colors.white), // Bright text color
+                  style: TextStyle(color: Colors.white),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
@@ -317,7 +342,8 @@ class _TimetablePageState extends State<TimetablePage> {
                         subject,
                         style: TextStyle(
                           fontSize: 16,
-                          color: isDarkMode ? Colors.white70 : Colors.black87,
+                          color:
+                          isDarkMode ? Colors.white70 : Colors.black87,
                         ),
                       )),
                       SizedBox(height: 16),
