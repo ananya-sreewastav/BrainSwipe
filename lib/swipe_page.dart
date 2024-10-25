@@ -77,7 +77,7 @@ class _SwipePageState extends State<SwipePage> {
         ],
       ),
       // Update the background to be white
-      backgroundColor: Colors.white,
+      backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
       body: _swipeItems.isEmpty
           ? Center(child: CircularProgressIndicator())
           : Stack(
@@ -158,8 +158,8 @@ class StudyGroupCard extends StatelessWidget {
           ],
           gradient: LinearGradient(
             colors: isDarkMode
-                ? [Color(0xFF00BFA5), Color(0xFF4DD0E1)] // Teal and Cyan for Dark Mode
-                : [Color(0xFF9C27B0), Color(0xFFE91E63)], // Purple and Pink for Light Mode
+                ? [Colors.black, Colors.white] // Black and White for Dark Mode
+                : [Color(0xFFADD8E6), Color(0xFF001F3F)], // Navy and Light Blue for Light Mode
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -182,42 +182,42 @@ class StudyGroupCard extends StatelessWidget {
                   style: GoogleFonts.lato(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : Colors.white, // White text in light mode
                   ),
                 ),
                 SizedBox(height: 20),
                 Text(
                   'Department: ${data['department'] ?? 'No department'}',
                   style: TextStyle(
-                    color: isDarkMode ? Colors.white70 : Colors.black87,
+                    color: isDarkMode ? Colors.white70 : Colors.white, // White text in light mode
                     fontSize: 16,
                   ),
                 ),
                 Text(
                   'Date: ${data['date'] ?? 'No date'}',
                   style: TextStyle(
-                    color: isDarkMode ? Colors.white70 : Colors.black87,
+                    color: isDarkMode ? Colors.white70 : Colors.white, // White text in light mode
                     fontSize: 16,
                   ),
                 ),
                 Text(
                   'Time: ${data['time'] ?? 'No time'}',
                   style: TextStyle(
-                    color: isDarkMode ? Colors.white70 : Colors.black87,
+                    color: isDarkMode ? Colors.white70 : Colors.white, // White text in light mode
                     fontSize: 16,
                   ),
                 ),
                 Text(
                   'Location: ${data['location'] ?? 'No location'}',
                   style: TextStyle(
-                    color: isDarkMode ? Colors.white70 : Colors.black87,
+                    color: isDarkMode ? Colors.white70 : Colors.white, // White text in light mode
                     fontSize: 16,
                   ),
                 ),
                 Text(
                   'Members: ${data['members'] ?? 'No members'}',
                   style: TextStyle(
-                    color: isDarkMode ? Colors.white70 : Colors.black87,
+                    color: isDarkMode ? Colors.white70 : Colors.white, // White text in light mode
                     fontSize: 16,
                   ),
                 ),
