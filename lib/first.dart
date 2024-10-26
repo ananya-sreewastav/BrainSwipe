@@ -6,6 +6,7 @@ import 'user.dart';
 import 'planner.dart';
 import 'swipe_page.dart';
 import 'timetable_page.dart';
+import 'notifications_page.dart'; // Import the notifications page
 
 class FirstPage extends StatelessWidget {
   @override
@@ -36,6 +37,21 @@ class FirstPage extends StatelessWidget {
             );
           },
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.notifications,
+              size: 30,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NotificationsPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -249,7 +265,7 @@ class Section4 extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'NEED SOME PERSONALIZED HELP',
+            'NEED SOME PERSONALIZED HELP?',
             style: GoogleFonts.playfairDisplay(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -266,7 +282,7 @@ class Section4 extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 8),
+          SizedBox(height: 16),
           ElevatedButton.icon(
             onPressed: () {
               Navigator.push(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 
 class UserPage extends StatelessWidget {
   @override
@@ -66,8 +67,23 @@ class UserPage extends StatelessWidget {
                     );
                   }
 
+                  final pastGroups = snapshot.data!.docs.where((doc) {
+                    final data = doc.data() as Map<String, dynamic>;
+                    final date = DateTime.tryParse(data['date'] ?? '') ?? DateTime.now();
+                    return date.isBefore(DateTime.now());
+                  }).toList();
+
+                  if (pastGroups.isEmpty) {
+                    return Text(
+                      'No past study groups available.',
+                      style: TextStyle(
+                        color: isDarkMode ? Colors.white : Colors.black,
+                      ),
+                    );
+                  }
+
                   return ListView(
-                    children: snapshot.data!.docs.map((doc) {
+                    children: pastGroups.map((doc) {
                       final data = doc.data() as Map<String, dynamic>;
                       return _buildStudyGroupBox(data, isDarkMode);
                     }).toList(),
@@ -88,8 +104,9 @@ class UserPage extends StatelessWidget {
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
-                    .collection('study_groups')
-                    .where('members', arrayContains: userID)
+                    .collection('users')
+                    .doc(userID)
+                    .collection('registered_study_groups')
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -105,8 +122,23 @@ class UserPage extends StatelessWidget {
                     );
                   }
 
+                  final upcomingGroups = snapshot.data!.docs.where((doc) {
+                    final data = doc.data() as Map<String, dynamic>;
+                    final date = DateTime.tryParse(data['date'] ?? '') ?? DateTime.now();
+                    return date.isAfter(DateTime.now());
+                  }).toList();
+
+                  if (upcomingGroups.isEmpty) {
+                    return Text(
+                      'No upcoming study groups available.',
+                      style: TextStyle(
+                        color: isDarkMode ? Colors.white : Colors.black,
+                      ),
+                    );
+                  }
+
                   return ListView(
-                    children: snapshot.data!.docs.map((doc) {
+                    children: upcomingGroups.map((doc) {
                       final data = doc.data() as Map<String, dynamic>;
                       return _buildStudyGroupBox(data, isDarkMode);
                     }).toList(),
@@ -140,7 +172,7 @@ class UserPage extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 5),
       height: 50,
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[800] : Colors.blue[100],
+        color: isDarkMode ? Colors.grey[800] : Colors.blueGrey,
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
@@ -152,7 +184,7 @@ class UserPage extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          data['subject'] ?? 'No subject',
+          '${data['subject']} on ${data['date'] ?? 'No date'}',
           style: TextStyle(
             color: isDarkMode ? Colors.white : Colors.black,
             fontWeight: FontWeight.bold,

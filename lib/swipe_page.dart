@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 import 'cart_page.dart'; // Import the cart page
+import 'package:intl/intl.dart'; // For date formatting
 
 class SwipePage extends StatefulWidget {
   @override
@@ -21,7 +22,14 @@ class _SwipePageState extends State<SwipePage> {
   }
 
   void _fetchStudyGroups() {
-    FirebaseFirestore.instance.collection('study_groups').snapshots().listen((snapshot) {
+    DateTime currentDate = DateTime.now();
+    String formattedCurrentDate = DateFormat('yyyy-MM-dd').format(currentDate);
+
+    FirebaseFirestore.instance
+        .collection('study_groups')
+        .where('date', isGreaterThanOrEqualTo: formattedCurrentDate)
+        .snapshots()
+        .listen((snapshot) {
       setState(() {
         _swipeItems = snapshot.docs.map((doc) {
           final data = doc.data() as Map<String, dynamic>;
